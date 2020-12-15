@@ -5,7 +5,7 @@ A headless content management system for future Web Dev Carolina client projects
 Steps for running this app in a local environment will be found here.
 
 # Features
-All features and document 
+All features implemented at the moment.
 
 # API Usage
 Full endpoint documentation along with examples will be added here.
