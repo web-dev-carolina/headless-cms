@@ -9,7 +9,15 @@ All features implemented at the moment.
 
 # API Usage
 Full endpoint documentation along with examples will be added here.
-
+### Testimonials
+##### POST
+Adds a testimonial object.
+Example:
+    curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}'  http://localhost:9000/testimonials
+    
+##### GET 
+##### PUT
+##### DELETE
 # Compatible Templates
 Links to custom designed templates for API integration will be added here over time.
 
