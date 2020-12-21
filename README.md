@@ -12,6 +12,7 @@ Full endpoint documentation along with examples will be added here.
 ### Testimonials
 #### POST
 Adds a testimonial object.
+Returns a list of testimonial objects.
 
 Data:
 ```
@@ -29,7 +30,6 @@ OR
 ```
 await Axios.post("http://localhost:9000/testimonials", testimonialData);
 ```
-
     
 #### GET 
 #### PUT
