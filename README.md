@@ -13,7 +13,8 @@ Full endpoint documentation along with examples will be added here.
 ##### POST
 Adds a testimonial object.
 Example:
-    curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}'  http://localhost:9000/testimonials
+
+curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}'  http://localhost:9000/testimonials
     
 ##### GET 
 ##### PUT
