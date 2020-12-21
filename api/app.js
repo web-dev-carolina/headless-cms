@@ -70,7 +70,8 @@ app.put("/testimonials/:id", async (req, res) => {
         const testId = req.params.id;
         const item = req.body;
         const testi = await testimonials.findById(testId);
-        testi = item;
+        testi.text = item.text;
+        testi.author = item.author;
         testi.save()
         const savedTesti = await testimonials.findById(testId);
         res.json({
