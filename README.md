@@ -13,9 +13,23 @@ Full endpoint documentation along with examples will be added here.
 #### POST
 Adds a testimonial object.
 
+Data:
+```
+{ 
+    "text": "testimonial text",
+    "author": "testimonial author" 
+}
+```
+  
 Example:
-
+```
 curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}'  http://localhost:9000/testimonials
+````
+OR
+```
+await Axios.post("http://localhost:9000/testimonials", testimonialData);
+```
+
     
 #### GET 
 #### PUT
