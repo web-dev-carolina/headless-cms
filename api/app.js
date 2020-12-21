@@ -36,25 +36,53 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
 /* CRUD routes */
 
-// post new testimonial
-// ex. $ curl http://localhost:9000/testimonials
-// ->JSON object matching the id
+// CREATE new testimonial
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials
+// -> new JSON object
 app.post("/testimonials", (req, res) => {
-    console.log(req.body);
     const item = req.body;
     testimonials.insertOne(item, (error, result) => {
         if (error) throw error;
-        // return new item
-        // res.json(result);
-        testimonials.find().toArray( (_error, _result) => {
+        // respond with all items in collection
+        testimonials.find().toArray((_error, _result) => {
             if (_error) throw _error;
             res.json(_result);
         });
     });
 });
 
-// get all testimonials
+// READ all testimonials
 // ex. $ curl http://localhost:9000/testimonials
+// -> all testimonials as JSON
+app.get("/testimonials", (req, res) => {
+    // respond with all items in collection
+    testimonials.find().toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
+});
+
+// UPDATE a testimonial
+// ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/5fe1104ce721ee218b985723
+// -> JSON object matching the id
+app.put("/testimonials/:id", async (req, res) => {
+    try {
+        const testId = req.params.id;
+        const item = req.body;
+        const testi = await testimonials.findById(testId);
+        testi = item;
+        testi.save()
+        const savedTesti = await testimonials.findById(testId);
+        res.json({
+            savedTesti,
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// DESTROY a testimonial
+// ex. 
 // ->JSON object matching the id
 app.get("/testimonials", (req, res) => {
     console.log("get testimonials");
