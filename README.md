@@ -20,7 +20,7 @@ Data:
     "author": "testimonial author" 
 }
 ```
-  
+
 Example:
 ```
 curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}' http://localhost:9000/testimonials
@@ -34,8 +34,32 @@ await Axios.post("http://localhost:9000/testimonials", testimonialData);
 Gets all testimonials.\
 Returns a complete list of testimonial objects.\
 Example:
+```
+curl http://localhost:9000/testimonials
+````
+OR
+```
+await Axios.get("http://localhost:9000/testimonials");
+```
 
 #### PUT
+Updates an existing testimonial.\
+Returns the updated testimonial if successful.\
+Data:
+```
+{ 
+    "text": "testimonial text",
+    "author": "testimonial author" 
+}
+```
+Example:
+```
+curl -X PUT -H "Content-Type: application/json" -d '{"text":"new testimonial body", "author":"new testimonial author"}' http://localhost:9000/testimonials/{id}
+```
+OR
+```
+await axios.put("http://localhost:9000/testimonials", testimonialData);
+```
 #### DELETE
 # Compatible Templates
 Links to custom designed templates for API integration will be added here over time.
