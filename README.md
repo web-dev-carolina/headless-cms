@@ -2,7 +2,9 @@
 A headless content management system for future Web Dev Carolina client projects built on the MERN stack.
 
 # Setup
-Steps for running this app in a local environment will be found here.
+Steps for running this app in a local environment:\
+1. Enter 'api' directory and run `npm start`
+2. Enter `cms-app` directory and run `npm start`
 
 # Features
 All features implemented at the moment.
@@ -65,5 +67,5 @@ await axios.put("http://localhost:9000/testimonials", testimonialData);
 Links to custom designed templates for API integration will be added here over time.
 
 # Contributors 
-Rushil Shah
+Rushil Shah\
 Mac Carlton
