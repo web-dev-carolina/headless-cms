@@ -14,6 +14,8 @@ app.options('*', cors());
 // parse JSON (application/json content-type)
 app.use(body_parser.json());
 
+const Testimonial = require("./models/testimonial_model.js");
+
 // mongoose setup
 mongoose.connect('mongodb+srv://admin:WebDev1!@cluster0.0eoiv.mongodb.net/test1?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -69,13 +71,16 @@ app.put("/testimonials/:id", async (req, res) => {
     try {
         const testId = req.params.id;
         const item = req.body;
-        const testi = await testimonials.findById(testId);
+        let testi = await Testimonial.findById(testId);
         testi.text = item.text;
         testi.author = item.author;
         testi.save()
-        const savedTesti = await testimonials.findById(testId);
+        const savedTesti = await Testimonial.findById(testId);
         res.json({
-            savedTesti,
+            testi : {
+                text: savedTesti.text,
+                author: savedTesti.author,
+            }
         });
     } catch (err) {
         res.status(500).json(err);
