@@ -5,4 +5,5 @@ const testimonial_schema = new mongoose.Schema({
     author: { type: String, required: true },
 });
 
-module.exports = Testimonial = mongoose.model("testimonial", testimonial_schema);
+Testimonial = mongoose.model("testimonial", testimonial_schema);
+module.exports = Testimonial;

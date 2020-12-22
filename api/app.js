@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mongoose = require('./node_modules/mongoose');
 const cors = require('cors');
 const indexRouter = require('./routes/index');
 const body_parser = require('body-parser');
@@ -14,30 +13,32 @@ app.use(cors());
 app.options('*', cors());
 // parse JSON (application/json content-type)
 app.use(body_parser.json());
-
-const Testimonial = require("./models/testimonial_model.js");
+const db = require("./db");
 
 // mongoose setup
-mongoose.connect('mongodb+srv://admin:WebDev1!@cluster0.0eoiv.mongodb.net/test1?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-}, (err) => {
-    if (err) throw err;
-    else console.log('mongodb connection successful');
-});
+// const mongoose = require('./node_modules/mongoose');
+// mongoose.connect('mongodb+srv://admin:WebDev1!@cluster0.0eoiv.mongodb.net/test1?retryWrites=true&w=majority', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useCreateIndex: true,
+// }, (err) => {
+//     if (err) throw err;
+//     else console.log('mongodb connection successful');
+// });
 
-const db = require("./db");
+// initialize Testimonial schema and db
+const TestimonialModel = require("./models/testimonial_model.js");
 const dbName = "test1";
-const collectionName = "testimonials";
+let collectionName = "testimonials";
 let testimonials;
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     testimonials = dbCollection;
+    console.log('testimonial collection connection successful');
 }, function (err) { // failureCallback
     throw (err);
 });
 
-/* CRUD routes */
+/* Testimonial CRUD routes */
 
 // CREATE new testimonial
 // ex. $ curl -X POST -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials
@@ -66,22 +67,18 @@ app.get("/testimonials", (req, res) => {
 });
 
 // UPDATE a testimonial
-// ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/5fe1104ce721ee218b985723
+// ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/{testimonialID}
 // -> JSON object matching the id
 app.put("/testimonials/:id", async (req, res) => {
     try {
         const testId = req.params.id;
-        const item = req.body;
-        let testi = await Testimonial.findById(testId);
-        testi.text = item.text;
-        testi.author = item.author;
-        testi.save()
-        const savedTesti = await Testimonial.findById(testId);
+        const newTestimonial = req.body;
+        let testi = await TestimonialModel.findById(testId);
+        testi.text = newTestimonial.text;
+        testi.author = newTestimonial.author;
+        testi.save();
         res.json({
-            testi : {
-                text: savedTesti.text,
-                author: savedTesti.author,
-            }
+            newTestimonial,
         });
     } catch (err) {
         res.status(500).json(err);
@@ -93,17 +90,84 @@ app.put("/testimonials/:id", async (req, res) => {
 // -> updated array of testimonial objects
 app.delete("/testimonials/:id", (req, res) => {
     const testId = req.params.id;
-    console.log("delete testimonial with ID: " + testId);
-    
-    Testimonial.deleteOne( {_id : new mongodb.ObjectID(testId.toString()) } , function(error, result) {
+    testimonials.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
         if (error) throw error;
-        console.log("successful deletion");
-        testimonials.find().toArray(function(_error, _result) {
+        testimonials.find().toArray(function (_error, _result) {
             if (_error) throw error;
             res.json(_result);
         });
     });
 });
+
+// initialize People schema and db
+const PeopleModel = require("./models/people_model.js");
+// from above: const dbName = "test1";
+collectionName = "people";
+let peopleCollection;
+db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+    peopleCollection = dbCollection;
+    console.log('people collection connection successful');
+}, function (err) { // failureCallback
+    throw (err);
+});
+
+/* People CRUD routes */
+
+// CREATE new people
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"fname":"John", "lname":"Doe", "pos":"Sultan", "bio":"Absolute champion"}' http://localhost:9000/people
+// -> new JSON object
+app.post("/people", (req, res) => {
+    const item = req.body;
+    peopleCollection.insertOne(item, (error, result) => {
+        if (error) throw error;
+        // respond with all items in collection
+        peopleCollection.find().toArray((_error, _result) => {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
+});
+
+// READ all people
+// ex. $ curl http://localhost:9000/people
+// -> all testimonials as JSON
+app.get("/people", (req, res) => {
+    // respond with all items in collection
+    peopleCollection.find().toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
+});
+
+// UPDATE a people
+// ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"fname":"new fname", "lname":"new lname", "pos":"new pos", "bio":"new bio"}' http://localhost:9000/people/{peopleID}
+// -> JSON object matching the id
+app.put("/people/:id", async (req, res) => {
+    const peepId = req.params.id;
+    const newPerson = req.body;
+    peopleCollection.updateOne({ _id: new mongodb.ObjectID(peepId.toString()) }, {$set: newPerson}, function (error, result) {
+        if (error) throw error;
+        peopleCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
+    });
+});
+
+// DESTROY a testimonial
+// ex. curl -X DELETE http://localhost:9000/people/{peopleID}
+// -> updated array of testimonial objects
+app.delete("/people/:id", (req, res) => {
+    const peepId = req.params.id;
+    peopleCollection.deleteOne({ _id: new mongodb.ObjectID(peepId.toString()) }, function (error, result) {
+        if (error) throw error;
+        peopleCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
+    });
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
