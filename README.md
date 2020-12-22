@@ -12,7 +12,9 @@ Full endpoint documentation along with examples will be added here.
 ### Testimonials
 #### POST
 Adds a testimonial object.
+
 Returns a list of testimonial objects.
+
 Data:
 ```
 { 
@@ -20,6 +22,7 @@ Data:
     "author": "testimonial author" 
 }
 ```
+  
 Example:
 ```
 curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}' http://localhost:9000/testimonials
