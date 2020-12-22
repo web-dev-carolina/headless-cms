@@ -3,7 +3,7 @@ A headless content management system for future Web Dev Carolina client projects
 
 # Setup
 Steps for running this app in a local environment:\
-1. Enter `api` ``directory`` and run `npm start`
+1. Enter `api` directory and run `npm start`
 2. Enter `cms-app` directory and run `npm start`
 
 # Features
