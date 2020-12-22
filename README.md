@@ -15,7 +15,7 @@ All features implemented at the moment
 Full endpoint documentation along with example API calls:
 
 ### Testimonials
-Data:
+Data scheme:
 ```
 { 
     "text": "testimonial text",
@@ -28,7 +28,7 @@ Adds a testimonial object.\
 Returns a complete list of testimonial objects.\
 Example:
 ```
-curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}' http://localhost:9000/testimonials
+$ curl -X POST -H "Content-Type: application/json" --data '{"text":"This is a sample testimonial written in CURL", "author":"Mac Carlton"}' http://localhost:9000/testimonials
 ````
 OR
 ```
@@ -40,7 +40,7 @@ Gets all testimonials.\
 Returns a complete list of testimonial objects.\
 Example:
 ```
-curl http://localhost:9000/testimonials
+$ curl http://localhost:9000/testimonials
 ````
 OR
 ```
@@ -52,7 +52,7 @@ Updates an existing testimonial by document id.\
 Returns the updated testimonial, if successful.\
 Example:
 ```
-curl -X PUT -H "Content-Type: application/json" -d '{"text":"new testimonial body", "author":"new testimonial author"}' http://localhost:9000/testimonials/{id}
+$ curl -X PUT -H "Content-Type: application/json" -d '{"text":"new testimonial body", "author":"new testimonial author"}' http://localhost:9000/testimonials/{id}
 ```
 OR
 ```
@@ -64,7 +64,7 @@ Deletes a testimonial by document id.\
 Returns an updated list of testimonial objects if successful.\
 Example:
 ```
-curl -X DELETE http://localhost:9000/testimonials/{id}
+$ curl -X DELETE http://localhost:9000/testimonials/{id}
 ```
 OR
 ```
@@ -72,7 +72,7 @@ await axios.delete("http://localhost:9000/testimonials/{id});
 ```
 
 ### People (Organization Officers)
-Data:
+Data scheme:
 ```
 { 
     "fname": "person first name",
@@ -87,7 +87,7 @@ Adds an officer.\
 Returns a complete list of the organizaiton.\
 Example:
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"fname":"First Name", "lname":"Last Name", "pos":"Organization Position", "bio":"Short Bio"}' http://localhost:9000/people
+$ curl -X POST -H "Content-Type: application/json" -d '{"fname":"First Name", "lname":"Last Name", "pos":"Organization Position", "bio":"Short Bio"}' http://localhost:9000/people
 ````
 OR
 ```
@@ -99,7 +99,7 @@ Gets all people.\
 Returns a complete list of the organization.\
 Example:
 ```
-curl http://localhost:9000/people
+$ curl http://localhost:9000/people
 ````
 OR
 ```
@@ -111,7 +111,7 @@ Updates an existing person by document id.\
 Returns the updated person, if successful.\
 Example:
 ```
-curl -X PUT -H "Content-Type: application/json" -d '{"fname":"new fname", "lname":"new lname", "pos":"new pos", "bio":"new bio"}' http://localhost:9000/people/{id}
+$ curl -X PUT -H "Content-Type: application/json" -d '{"fname":"new fname", "lname":"new lname", "pos":"new pos", "bio":"new bio"}' http://localhost:9000/people/{id}
 ```
 OR
 ```
@@ -124,7 +124,7 @@ Returns an updated list of people, if successful.\
 
 Example:
 ```
-curl -X DELETE http://localhost:9000/people/{id}
+$ curl -X DELETE http://localhost:9000/people/{id}
 ```
 OR
 ```
