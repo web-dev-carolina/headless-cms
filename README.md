@@ -11,10 +11,8 @@ All features implemented at the moment.
 Full endpoint documentation along with examples will be added here.
 ### Testimonials
 #### POST
-Adds a testimonial object.
-
-Returns a list of testimonial objects.
-
+Adds a testimonial object.\
+Returns a complete list of testimonial objects.\
 Data:
 ```
 { 
@@ -31,8 +29,12 @@ OR
 ```
 await Axios.post("http://localhost:9000/testimonials", testimonialData);
 ```
-    
+
 #### GET 
+Gets all testimonials.\
+Returns a complete list of testimonial objects.\
+Example:
+
 #### PUT
 #### DELETE
 # Compatible Templates
