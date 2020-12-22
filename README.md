@@ -63,6 +63,17 @@ OR
 await axios.put("http://localhost:9000/testimonials", testimonialData);
 ```
 #### DELETE
+Deletes a testimonial by document id.\
+Returns an updated list of testimonial objects if successful.\
+
+Example:
+```
+curl -X DELETE http://localhost:9000/testimonials/5fe11afb6cb65ca7dd63cd2d
+```
+OR
+```
+await axios.delete("http://localhost:9000/testimonials", testimonialID);
+```
 # Compatible Templates
 Links to custom designed templates for API integration will be added here over time.
 
