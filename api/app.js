@@ -15,24 +15,12 @@ app.options('*', cors());
 app.use(body_parser.json());
 const db = require("./db");
 
-// mongoose setup
-// const mongoose = require('./node_modules/mongoose');
-// mongoose.connect('mongodb+srv://admin:WebDev1!@cluster0.0eoiv.mongodb.net/test1?retryWrites=true&w=majority', {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useCreateIndex: true,
-// }, (err) => {
-//     if (err) throw err;
-//     else console.log('mongodb connection successful');
-// });
-
 // initialize Testimonial schema and db
-const TestimonialModel = require("./models/testimonial_model.js");
 const dbName = "test1";
 let collectionName = "testimonials";
-let testimonials;
+let testimonialCollection;
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-    testimonials = dbCollection;
+    testimonialCollection = dbCollection;
     console.log('testimonial collection connection successful');
 }, function (err) { // failureCallback
     throw (err);
@@ -45,10 +33,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 // -> new JSON object
 app.post("/testimonials", (req, res) => {
     const item = req.body;
-    testimonials.insertOne(item, (error, result) => {
+    testimonialCollection.insertOne(item, (error, result) => {
         if (error) throw error;
         // respond with all items in collection
-        testimonials.find().toArray((_error, _result) => {
+        testimonialCollection.find().toArray((_error, _result) => {
             if (_error) throw _error;
             res.json(_result);
         });
@@ -60,7 +48,7 @@ app.post("/testimonials", (req, res) => {
 // -> all testimonials as JSON
 app.get("/testimonials", (req, res) => {
     // respond with all items in collection
-    testimonials.find().toArray((error, result) => {
+    testimonialCollection.find().toArray((error, result) => {
         if (error) throw error;
         res.json(result);
     });
@@ -70,19 +58,15 @@ app.get("/testimonials", (req, res) => {
 // ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/{testimonialID}
 // -> JSON object matching the id
 app.put("/testimonials/:id", async (req, res) => {
-    try {
-        const testId = req.params.id;
-        const newTestimonial = req.body;
-        let testi = await TestimonialModel.findById(testId);
-        testi.text = newTestimonial.text;
-        testi.author = newTestimonial.author;
-        testi.save();
-        res.json({
-            newTestimonial,
+    const testId = req.params.id;
+    const newTestimonial = req.body;
+    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, {$set: newTestimonial}, function (error, result) {
+        if (error) throw error;
+        testimonialCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
         });
-    } catch (err) {
-        res.status(500).json(err);
-    }
+    });
 });
 
 // DESTROY a testimonial
@@ -90,9 +74,9 @@ app.put("/testimonials/:id", async (req, res) => {
 // -> updated array of testimonial objects
 app.delete("/testimonials/:id", (req, res) => {
     const testId = req.params.id;
-    testimonials.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
+    testimonialCollection.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
         if (error) throw error;
-        testimonials.find().toArray(function (_error, _result) {
+        testimonialCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
             res.json(_result);
         });
@@ -100,7 +84,6 @@ app.delete("/testimonials/:id", (req, res) => {
 });
 
 // initialize People schema and db
-const PeopleModel = require("./models/people_model.js");
 // from above: const dbName = "test1";
 collectionName = "people";
 let peopleCollection;
@@ -114,7 +97,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 /* People CRUD routes */
 
 // CREATE new people
-// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"fname":"John", "lname":"Doe", "pos":"Sultan", "bio":"Absolute champion"}' http://localhost:9000/people
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"fname":"John", "lname":"Doe", "pos":"King", "bio":"Absolute champion"}' http://localhost:9000/people
 // -> new JSON object
 app.post("/people", (req, res) => {
     const item = req.body;
