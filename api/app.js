@@ -8,7 +8,8 @@ const indexRouter = require('./routes/index');
 const body_parser = require('body-parser');
 const express = require('express');
 const app = express();
-
+var mongodb = require("mongodb");
+var ObjectID = require('mongodb').ObjectID;
 app.use(cors());
 app.options('*', cors());
 // parse JSON (application/json content-type)
@@ -88,17 +89,21 @@ app.put("/testimonials/:id", async (req, res) => {
 });
 
 // DESTROY a testimonial
-// ex. 
-// ->JSON object matching the id
-app.get("/testimonials", (req, res) => {
-    console.log("get testimonials");
-    // return full list
-    testimonials.find().toArray((error, result) => {
+// ex. curl -X DELETE http://localhost:9000/testimonials/{testimonialID}
+// -> updated array of testimonial objects
+app.delete("/testimonials/:id", (req, res) => {
+    const testId = req.params.id;
+    console.log("delete testimonial with ID: " + testId);
+    
+    Testimonial.deleteOne( {_id : new mongodb.ObjectID(testId.toString()) } , function(error, result) {
         if (error) throw error;
-        res.json(result);
+        console.log("successful deletion");
+        testimonials.find().toArray(function(_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
     });
 });
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
