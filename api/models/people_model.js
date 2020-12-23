@@ -8,5 +8,5 @@ const people_schema = new mongoose.Schema({
     bio: { type: String, required: true }
 });
 
-People = mongoose.model("people", people_schema);
-module.exports = People;
+// People = mongoose.model("people", people_schema);
+// module.exports = People;

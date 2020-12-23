@@ -15,7 +15,103 @@ app.options('*', cors());
 app.use(body_parser.json());
 const db = require("./db");
 
-// initialize Testimonial schema and db
+// initialize User db
+const dbName = "test1";
+let collectionName = "users";
+let userCollection;
+db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+    userCollection = dbCollection;
+    console.log('users collection connection successful');
+}, function (err) { // failureCallback
+    throw (err);
+});
+
+/* Testimonial CRUD routes */
+
+// CREATE new user
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pswd":"pswd", "pswdCheck":"pswd confirmation", "proj":"[proj1, proj2]"}' http://localhost:9000/users/signup
+// -> new JSON object
+app.post('/users/signup', async (req, res) => {
+    // verify valid data
+    let { user, pswd, pswdCheck, proj } = req.body;
+    if (!user || !pswd) return res.status(400).json({ msg: "missing username or password" });
+    if (pswd != pswdCheck) return res.status(400).json({msg: "passwords do not match"});
+    const existing = await userCollection.findOne( { "user": { "$eq": user } } );
+    if (existing) return res.status(400).json({msg: "this user already exists"});
+    newUser = {user, pswd, proj};
+    // add the user
+    userCollection.insertOne(newUser, (error, result) => {
+        if (error) throw error;
+        // respond with all items in collection
+        userCollection.find().toArray((_error, _result) => {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
+});
+
+// LOGIN user
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pswd":"pswd"}' http://localhost:9000/users/login
+// -> new JSON object
+app.post('/users/login', async (req, res) => {
+    // verify valid data
+    let userInfo = req.body;
+    if (!user || !pswd) return res.status(400).json({ msg: "missing username or password" });
+    const existing = await userCollection.findOne( { "user": { "$eq": user } } );
+    if (!existing) return res.status(400).json({msg: "this user does not exist"});
+    newUser = {user, pswd, proj};
+    // add the user
+    userCollection.insertOne(userInfo, (error, result) => {
+        if (error) throw error;
+        // respond with all items in collection
+        userCollection.find().toArray((_error, _result) => {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
+});
+
+// READ all users
+// ex. $ curl http://localhost:9000/users
+// -> all testimonials as JSON
+app.get("/users", (req, res) => {
+    // respond with all items in collection
+    userCollection.find().toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
+});
+
+// UPDATE a testimonial
+// ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/{testimonialID}
+// -> JSON object matching the id
+app.put("/testimonials/:id", async (req, res) => {
+    const testId = req.params.id;
+    const newTestimonial = req.body;
+    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, {$set: newTestimonial}, function (error, result) {
+        if (error) throw error;
+        testimonialCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
+    });
+});
+
+// DESTROY a testimonial
+// ex. curl -X DELETE http://localhost:9000/testimonials/{testimonialID}
+// -> updated array of testimonial objects
+app.delete("/users/:id", (req, res) => {
+    const testId = req.params.id;
+    testimonialCollection.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
+        if (error) throw error;
+        testimonialCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
+    });
+});
+
+// initialize Testimonial db
 const dbName = "test1";
 let collectionName = "testimonials";
 let testimonialCollection;
@@ -83,7 +179,7 @@ app.delete("/testimonials/:id", (req, res) => {
     });
 });
 
-// initialize People schema and db
+// initialize People db
 // from above: const dbName = "test1";
 collectionName = "people";
 let peopleCollection;
