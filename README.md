@@ -131,6 +131,16 @@ OR
 await axios.delete("http://localhost:9000/people/{id});
 ```
 
+### Users (CMS Authorized Users)
+Data scheme:
+```
+{ 
+    "user": "username",
+    "pswd": "user pswd, encrypted",
+    "proj": ["authorized", "projects"],
+}
+```
+
 # Compatible Templates
 Links to custom designed templates for API integration will be added here as they are completed.
 
