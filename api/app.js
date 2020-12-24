@@ -110,7 +110,7 @@ app.put("/users/:id", async (req, res) => {
     });
 });
 
-// DESTROY a testimonial
+// DESTROY a Testimonial
 // ex. curl -X DELETE http://localhost:9000/testimonials/{testimonialID}
 // -> updated array of testimonial objects
 app.delete("/users/:id", (req, res) => {
@@ -124,15 +124,46 @@ app.delete("/users/:id", (req, res) => {
     });
 });
 
+// After login, a user may connect to one of their projects:
+// this function will initialize connections to all collections.
+
+// CONNECT to user's project
+// ex. curl -X POST -H "Content-Type: application/json" -d '{"project":"projectName"}' http://localhost:9000/projects/connect
+
 // initialize Testimonial db
-dbName = "test1";
-collectionName = "testimonials";
 let testimonialCollection;
-db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-    testimonialCollection = dbCollection;
-    console.log('testimonial collection connection successful');
-}, function (err) { // failureCallback
-    throw (err);
+let peopleCollection;
+app.post('/projects/connect', async (req, res) => { 
+    try {
+        //TODO: Verify project exists (from project collection)
+        const proj = req.body.project;
+
+        // connect to testimonial collection
+        dbName = "test1";
+        collectionName = proj + "-testimonials";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+            testimonialCollection = dbCollection;
+            console.log('testimonial collection connection successful');
+        }, function (err) { // failureCallback
+            throw (err);
+        });
+
+        // connect to people collection
+        // defined above - const dbName = "test1";
+        collectionName = proj + "-people";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+            peopleCollection = dbCollection;
+            console.log('people collection connection successful');
+        }, function (err) { // failureCallback
+            throw (err);
+        });
+
+        res.json(200);
+    } catch(err) {
+        res.status(500).json(err);
+    }
 });
 
 /* Testimonial CRUD routes */
@@ -192,16 +223,6 @@ app.delete("/testimonials/:id", (req, res) => {
     });
 });
 
-// initialize People db
-// defined above - const dbName = "test1";
-collectionName = "people";
-let peopleCollection;
-db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-    peopleCollection = dbCollection;
-    console.log('people collection connection successful');
-}, function (err) { // failureCallback
-    throw (err);
-});
 
 /* People CRUD routes */
 
