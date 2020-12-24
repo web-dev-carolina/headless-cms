@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Navbar, Nav, Button, Image, NavDropdown } from 'react-bootstrap';
 import { HashLink as HLink } from 'react-router-hash-link';
 import { Route, Switch } from 'react-router-dom';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
+import UserContext from "../context/UserContext.js";
 
 const NavbarContainer = () => {
+  const { userData, setUserData } = useContext(UserContext);
+
   return (
     <>
       <Navbar sticky="top" bg="light" variant="light" className="navbar enriq" expand="md" collapseOnSelect>

@@ -13,11 +13,12 @@ app.use(cors());
 app.options('*', cors());
 // parse JSON (application/json content-type)
 app.use(body_parser.json());
+require('dotenv').config();
 const db = require("./db");
 
 // initialize User db
-const dbName = "test1";
-let collectionName = "users";
+let dbName = "users";
+let collectionName = "cms-app";
 let userCollection;
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     userCollection = dbCollection;
@@ -35,10 +36,10 @@ app.post('/users/signup', async (req, res) => {
     // verify valid data
     let { user, pswd, pswdCheck, proj } = req.body;
     if (!user || !pswd) return res.status(400).json({ msg: "missing username or password" });
-    if (pswd != pswdCheck) return res.status(400).json({msg: "passwords do not match"});
-    const existing = await userCollection.findOne( { "user": { "$eq": user } } );
-    if (existing) return res.status(400).json({msg: "this user already exists"});
-    newUser = {user, pswd, proj};
+    if (pswd != pswdCheck) return res.status(400).json({ msg: "passwords do not match" });
+    const existing = await userCollection.findOne({ "user": { "$eq": user } });
+    if (existing) return res.status(400).json({ msg: "this user already exists" });
+    newUser = { user, pswd, proj };
     // add the user
     userCollection.insertOne(newUser, (error, result) => {
         if (error) throw error;
@@ -51,29 +52,39 @@ app.post('/users/signup', async (req, res) => {
 });
 
 // LOGIN user
-// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pswd":"pswd"}' http://localhost:9000/users/login
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pass":"pswd"}' http://localhost:9000/users/login
 // -> new JSON object
 app.post('/users/login', async (req, res) => {
-    // verify valid data
-    let userInfo = req.body;
-    if (!user || !pswd) return res.status(400).json({ msg: "missing username or password" });
-    const existing = await userCollection.findOne( { "user": { "$eq": user } } );
-    if (!existing) return res.status(400).json({msg: "this user does not exist"});
-    newUser = {user, pswd, proj};
-    // add the user
-    userCollection.insertOne(userInfo, (error, result) => {
-        if (error) throw error;
-        // respond with all items in collection
-        userCollection.find().toArray((_error, _result) => {
-            if (_error) throw _error;
-            res.json(_result);
+    try {
+        // verify valid data
+        const user = req.body.user;
+        const pass = req.body.pass;
+        if (!user || !pass) return res.status(400).json({ msg: "missing username or password" });
+        const existing = await userCollection.findOne({ user });
+        if (!existing) return res.status(400).json({ msg: "this user does not exist" });
+        {
+            if (existing.pass != pass) return res.status(400).json({ msg: "invalid credentials" });
+            // let isMatch = await bcrypt.compare(password, existing.password);
+            // if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
+        }
+        const token = jwt.sign({ id: existing._id }, process.env.JWT_TOKEN_PASS);
+        // login user
+        res.json({
+            token,
+            userData: {
+                user: existing.user,
+                proj: existing.proj,
+            }
         });
-    });
+        console.log('successful login');
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
 // READ all users
 // ex. $ curl http://localhost:9000/users
-// -> all testimonials as JSON
+// -> all users as array of JSON
 app.get("/users", (req, res) => {
     // respond with all items in collection
     userCollection.find().toArray((error, result) => {
@@ -85,10 +96,10 @@ app.get("/users", (req, res) => {
 // UPDATE a testimonial
 // ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/{testimonialID}
 // -> JSON object matching the id
-app.put("/testimonials/:id", async (req, res) => {
+app.put("/users/:id", async (req, res) => {
     const testId = req.params.id;
     const newTestimonial = req.body;
-    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, {$set: newTestimonial}, function (error, result) {
+    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
         if (error) throw error;
         testimonialCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
@@ -112,8 +123,8 @@ app.delete("/users/:id", (req, res) => {
 });
 
 // initialize Testimonial db
-const dbName = "test1";
-let collectionName = "testimonials";
+dbName = "test1";
+collectionName = "testimonials";
 let testimonialCollection;
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     testimonialCollection = dbCollection;
@@ -141,7 +152,7 @@ app.post("/testimonials", (req, res) => {
 
 // READ all testimonials
 // ex. $ curl http://localhost:9000/testimonials
-// -> all testimonials as JSON
+// -> all testimonials as array of JSON
 app.get("/testimonials", (req, res) => {
     // respond with all items in collection
     testimonialCollection.find().toArray((error, result) => {
@@ -156,7 +167,7 @@ app.get("/testimonials", (req, res) => {
 app.put("/testimonials/:id", async (req, res) => {
     const testId = req.params.id;
     const newTestimonial = req.body;
-    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, {$set: newTestimonial}, function (error, result) {
+    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
         if (error) throw error;
         testimonialCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
@@ -180,7 +191,7 @@ app.delete("/testimonials/:id", (req, res) => {
 });
 
 // initialize People db
-// from above: const dbName = "test1";
+// defined above - const dbName = "test1";
 collectionName = "people";
 let peopleCollection;
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
@@ -224,7 +235,7 @@ app.get("/people", (req, res) => {
 app.put("/people/:id", async (req, res) => {
     const peepId = req.params.id;
     const newPerson = req.body;
-    peopleCollection.updateOne({ _id: new mongodb.ObjectID(peepId.toString()) }, {$set: newPerson}, function (error, result) {
+    peopleCollection.updateOne({ _id: new mongodb.ObjectID(peepId.toString()) }, { $set: newPerson }, function (error, result) {
         if (error) throw error;
         peopleCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;

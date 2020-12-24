@@ -136,7 +136,7 @@ Data scheme:
 ```
 { 
     "user": "username",
-    "pswd": "user pswd, encrypted",
+    "pswd": "user pswd (encrypted in db)",
     "proj": ["authorized", "projects"],
 }
 ```

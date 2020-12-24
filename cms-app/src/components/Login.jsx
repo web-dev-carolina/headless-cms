@@ -1,24 +1,32 @@
-import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import React, { useState, useContext } from "react";
+import { Form, Container, Button } from "react-bootstrap";
 import "../styles/Login.css";
+import Axios from "axios";
+import UserContext from '../context/UserContext.js';
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const {setUserData} = useContext(UserContext);
 
   function validateForm() {
     return username.length > 0 && password.length > 5;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    
+    const loginUser = {username, password};
+    const loginRes = await Axios.post("http://localhost:9000/users/login", loginUser);
+    setUserData({
+      // token: loginRes.data.token,
+      user: loginRes.data.user
+  });
   }
 
   return (
-    <div className="login">
-      <Form onSubmit={handleSubmit}>
+    <Container className="login pt-3">
+      <h3 className="text-center">Sign in to use this app</h3>
+      <Form onSubmit={handleSubmit} className="pt-3">
         <Form.Group size="lg" controlId="email">
           <Form.Label>Username</Form.Label>
           <Form.Control
@@ -37,9 +45,9 @@ export default function Login() {
           />
         </Form.Group>
         <Button block size="lg" type="submit" disabled={!validateForm()}>
-          Login
+          Sign in
         </Button>
       </Form>
-    </div>
+    </Container>
   );
 }
