@@ -28,7 +28,28 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     throw (err);
 });
 
-/* Testimonial CRUD routes */
+app.post("/users/tokenIsValid", async (req, res) => {
+    try {
+        const token = req.header("auth-token");
+        if (!token) return res.json(false);
+
+        const verified = jwt.verify(token, process.env.JWT_TOKEN_PASS);
+        if (!verified) return res.json(false);
+
+        const user = await userCollection.findOne({ _id: new mongodb.ObjectID(verified.id.toString()) });
+        if (!user) return res.json(false);
+
+        return res.json({
+            valid: true,
+            token: token,
+            user
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+/* User CRUD routes */
 
 // CREATE new user
 // ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pswd":"pswd", "pswdCheck":"pswd confirmation", "proj":"[proj1, proj2]"}' http://localhost:9000/users/signup
@@ -58,14 +79,13 @@ app.post('/users/signup', async (req, res) => {
 app.post('/users/login', async (req, res) => {
     try {
         // verify valid data
-        const user = req.body.user;
-        const pass = req.body.pass;
+        const user = req.body.username;
+        const pass = req.body.password;
         if (!user || !pass) return res.status(400).json({ msg: "missing username or password" });
         const existing = await userCollection.findOne({ user });
         if (!existing) return res.status(400).json({ msg: "this user does not exist" });
         {
             let isMatch = (existing.pass != pass) ? false : true;
-            console.log(isMatch);
             // let isMatch = await bcrypt.compare(password, existing.password);
             if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
         }
@@ -73,12 +93,12 @@ app.post('/users/login', async (req, res) => {
         // login user
         res.json({
             token,
-            userData: {
-                user: existing.user,
+            userInfo: {
+                name: existing.user,
                 proj: existing.proj,
             }
         });
-        console.log('successful login');
+        console.log('successful login: ' + existing.user);
     } catch (err) {
         res.status(500).json(err);
     }
@@ -90,6 +110,17 @@ app.post('/users/login', async (req, res) => {
 app.get("/users", (req, res) => {
     // respond with all items in collection
     userCollection.find().toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
+});
+
+// READ a user by id
+// ex. $ curl http://localhost:9000/users/{id}
+// -> a user as JSON
+app.get("/users/:id", async (req, res) => {
+    const userId = req.params.id;
+    userCollection.findOne({ _id: new mongodb.ObjectID(userId.toString()) }, function (error, result) {
         if (error) throw error;
         res.json(result);
     });
@@ -110,9 +141,9 @@ app.put("/users/:id", async (req, res) => {
     });
 });
 
-// DESTROY a Testimonial
-// ex. curl -X DELETE http://localhost:9000/testimonials/{testimonialID}
-// -> updated array of testimonial objects
+// DESTROY a user
+// ex. curl -X DELETE http://localhost:9000/users/{userID}
+// -> updated array of users
 app.delete("/users/:id", (req, res) => {
     const testId = req.params.id;
     testimonialCollection.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
@@ -124,13 +155,10 @@ app.delete("/users/:id", (req, res) => {
     });
 });
 
-// After login, a user may connect to one of their projects:
-// this function will initialize connections to all collections.
-
+// After login, a user may connect to one of their projects - this function will initialize connections to all collections.
 // CONNECT to user's project
 // ex. curl -X POST -H "Content-Type: application/json" -d '{"project":"projectName"}' http://localhost:9000/projects/connect
-
-// initialize Testimonial db
+// initialize Testimonial and People db, should be called after login
 let testimonialCollection;
 let peopleCollection;
 app.post('/projects/connect', async (req, res) => { 
