@@ -7,6 +7,7 @@ const indexRouter = require('./routes/index');
 const body_parser = require('body-parser');
 const express = require('express');
 const app = express();
+const jwt = require("jsonwebtoken");
 var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
 app.use(cors());
@@ -94,9 +95,9 @@ app.get("/users", (req, res) => {
     });
 });
 
-// UPDATE a testimonial
+// UPDATE a user's info (primarily project permissions)
 // ex. $ curl -X PUT -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials/{testimonialID}
-// -> JSON object matching the id
+// -> updated JSON object matching the id
 app.put("/users/:id", async (req, res) => {
     const testId = req.params.id;
     const newTestimonial = req.body;
