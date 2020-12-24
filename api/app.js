@@ -63,9 +63,10 @@ app.post('/users/login', async (req, res) => {
         const existing = await userCollection.findOne({ user });
         if (!existing) return res.status(400).json({ msg: "this user does not exist" });
         {
-            if (existing.pass != pass) return res.status(400).json({ msg: "invalid credentials" });
+            let isMatch = (existing.pass != pass) ? false : true;
+            console.log(isMatch);
             // let isMatch = await bcrypt.compare(password, existing.password);
-            // if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
+            if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
         }
         const token = jwt.sign({ id: existing._id }, process.env.JWT_TOKEN_PASS);
         // login user
