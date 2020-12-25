@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import UserContext from "./context/UserContext.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Axios from 'axios';
+require('dotenv').config();
 
 function App() {
   const [userData, setUserData] = useState({ token: undefined, userInfo: { user: undefined, proj: [undefined] } });
@@ -17,11 +18,11 @@ function App() {
         localStorage.setItem("auth-token", "");
         token = "";
       }
-      const tokenRes = await Axios.post("http://localhost:9000/users/tokenIsValid", null, {
+      const tokenRes = await Axios.post(process.env.REACT_APP_API_URL+"/users/tokenIsValid", null, {
         headers: { "auth-token": token }
       });
       if (tokenRes.data.valid) {
-        const userRes = await Axios.get("http://localhost:9000/users/" + tokenRes.data.user._id);
+        const userRes = await Axios.get(process.env.REACT_APP_API_URL+"/users/" + tokenRes.data.user._id);
         setUserData({
           token: tokenRes.data.token,
           userInfo: {

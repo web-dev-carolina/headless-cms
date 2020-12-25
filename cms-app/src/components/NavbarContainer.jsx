@@ -10,7 +10,6 @@ import Home from './Home.jsx';
 import PeoplePage from './people/PeoplePage.jsx'
 import UserContext from "../context/UserContext.js";
 
-
 const NavbarContainer = () => {
   const { userData, setUserData } = useContext(UserContext);
 

@@ -14,7 +14,8 @@ cms-app/node_modules
 
 # misc
 .DS_Store
-.env
+/api/.env
+/cms-app/.env
 .env.local
 .env.development.local
 .env.test.local

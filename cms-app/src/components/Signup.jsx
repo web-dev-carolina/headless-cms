@@ -19,9 +19,9 @@ export default function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
     const signupUser = { username, password, passwordCheck };
-    await Axios.post("http://localhost:9000/users/signup", signupUser);
+    await Axios.post(process.env.REACT_APP_API_URL+"/users/signup", signupUser);
     const loginUser = { username, password };
-    const loginRes = await Axios.post("http://localhost:9000/users/login", loginUser);
+    const loginRes = await Axios.post(process.env.REACT_APP_API_URL+"/users/login", loginUser);
     setUserData({
       token: loginRes.data.token,
       userInfo: loginRes.data.userInfo
