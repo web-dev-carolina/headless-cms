@@ -1,25 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import UserContext from '../context/UserContext.js';
 import { Form, Container, Button } from "react-bootstrap";
 import "../styles/Signup.css";
+import { useHistory } from "react-router-dom";
+import Axios from "axios";
 
 export default function Login() {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [projects, setProjects] = useState([]);
+  const { setUserData } = useContext(UserContext);
 
   function validateForm() {
     return username.length > 0 && password.length > 0 && passwordCheck.length > 0;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-
+    const signupUser = { username, password, passwordCheck };
+    await Axios.post("http://localhost:9000/users/signup", signupUser);
+    const loginUser = { username, password };
+    const loginRes = await Axios.post("http://localhost:9000/users/login", loginUser);
+    setUserData({
+      token: loginRes.data.token,
+      userInfo: loginRes.data.userInfo
+    });
+    localStorage.setItem("auth-token", loginRes.data.token);
+    history.push('/projectselect');
   }
 
   return (
     <Container className="signup pt-3">
-      <h3 className="text-center">Sign up to create an account.</h3>
+      <h3 className="text-center">Create an account to manage your site.</h3>
       <h5 className="text-center">This will automatically send a request for write permissions.</h5>
       <h5 className="text-center">You will be notified when your permissions are assigned.</h5>
       <Form onSubmit={handleSubmit} className="pt-3">

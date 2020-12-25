@@ -56,12 +56,15 @@ app.post("/users/tokenIsValid", async (req, res) => {
 // -> new JSON object
 app.post('/users/signup', async (req, res) => {
     // verify valid data
-    let { user, pswd, pswdCheck, proj } = req.body;
-    if (!user || !pswd) return res.status(400).json({ msg: "missing username or password" });
-    if (pswd != pswdCheck) return res.status(400).json({ msg: "passwords do not match" });
-    const existing = await userCollection.findOne({ "user": { "$eq": user } });
+    const user = req.body.username;
+    const pass = req.body.password;
+    const passCheck = req.body.passwordCheck;
+    const proj = [];
+    if (!user || !pass) return res.status(400).json({ msg: "missing username or password" });
+    if (pass != passCheck) return res.status(400).json({ msg: "passwords do not match" });
+    const existing = await userCollection.findOne({ user });
     if (existing) return res.status(400).json({ msg: "this user already exists" });
-    newUser = { user, pswd, proj };
+    newUser = { user, pass, proj };
     // add the user
     userCollection.insertOne(newUser, (error, result) => {
         if (error) throw error;
@@ -161,7 +164,7 @@ app.delete("/users/:id", (req, res) => {
 // initialize Testimonial and People db, should be called after login
 let testimonialCollection;
 let peopleCollection;
-app.post('/projects/connect', async (req, res) => { 
+app.post('/projects/connect', async (req, res) => {
     try {
         //TODO: Verify project exists (from project collection)
         const proj = req.body.project;
@@ -189,7 +192,7 @@ app.post('/projects/connect', async (req, res) => {
         });
 
         res.json(200);
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(err);
     }
 });

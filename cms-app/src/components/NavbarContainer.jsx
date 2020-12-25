@@ -30,7 +30,7 @@ const NavbarContainer = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
           </Nav>
-          {userData.userInfo ? (
+          {userData.token != undefined ? (
             <>
             <Navbar.Text className="pr-3">Signed in as: <a>{userData.userInfo.user}</a></Navbar.Text>
             <Button as={HLink} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
