@@ -32,11 +32,9 @@ function App() {
           },
         });
         console.log('already logged in');
-        history.push('/project-select');
       }
-      else {
-        history.push('/signin');
-      }
+      history.push('/signin');
+
     }
     checkLoggedIn();
   }, []);

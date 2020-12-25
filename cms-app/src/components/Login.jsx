@@ -25,7 +25,7 @@ export default function Login() {
       userInfo: loginRes.data.userInfo
     });
     localStorage.setItem("auth-token", loginRes.data.token);
-    history.push('/project-select');
+    history.push('/projectselect');
   }
 
   return (

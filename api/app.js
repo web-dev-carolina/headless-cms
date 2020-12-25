@@ -94,7 +94,7 @@ app.post('/users/login', async (req, res) => {
         res.json({
             token,
             userInfo: {
-                name: existing.user,
+                user: existing.user,
                 proj: existing.proj,
             }
         });

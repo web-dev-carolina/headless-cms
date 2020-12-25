@@ -10,13 +10,14 @@ export default function ProjectSelect() {
   const history = useHistory();
   const { userData, setUserData } = useContext(UserContext);
 
-  function getProjects() {
+  let getProjects = function() {
+    console.log(userData);
     return userData.userInfo.proj.slice(0, -1);
   }
 
   async function clickHandler(project) {
     console.log(project);
-    const projReqBody = { "project": project }
+    const projReqBody = { "project": project };
     const projRes = await Axios.post("http://localhost:9000/projects/connect", projReqBody);
     // setUserData({
     //   userData,
@@ -27,18 +28,17 @@ export default function ProjectSelect() {
 
   return (
     <Container className="login pt-3">
+      {console.log(userData)}
       <h3 className="text-center">Select the project you want to work on.</h3>
       <div className="projects-list pt-3">
-        {
-          getProjects().map(p =>
-            <>
-              <Button key={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
-                {p}
-              </Button>
-              <br></br>
-            </>
-          )
-        }
+        {getProjects().map(p =>
+          <>
+            <Button key={p.toString()} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+              {p}
+            </Button>
+            <br></br>
+          </>
+        )}
       </div>
     </Container>
   );

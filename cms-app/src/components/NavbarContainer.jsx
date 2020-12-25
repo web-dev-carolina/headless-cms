@@ -47,7 +47,7 @@ const NavbarContainer = () => {
       <Switch>
         <Route path="/signin" component={Login} />
         <Route path='/signup' component={Signup} />
-        <Route path='/project-select' component={ProjectSelect} />
+        <Route path='/projectselect' component={ProjectSelect} />
         <Route path='/home' component={Home} />
       </Switch>
     </>
