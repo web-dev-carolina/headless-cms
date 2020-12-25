@@ -2,11 +2,14 @@ import React, { useContext } from 'react';
 import { Navbar, Nav, Button, Image, NavDropdown } from 'react-bootstrap';
 import { HashLink as HLink } from 'react-router-hash-link';
 import { Route, Switch } from 'react-router-dom';
+import Dashboard from './Dashboard.jsx'
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 import ProjectSelect from './ProjectSelect.jsx';
 import Home from './Home.jsx';
+import PeoplePage from './people/PeoplePage.jsx'
 import UserContext from "../context/UserContext.js";
+
 
 const NavbarContainer = () => {
   const { userData, setUserData } = useContext(UserContext);
@@ -48,6 +51,8 @@ const NavbarContainer = () => {
         <Route path='/signup' component={Signup} />
         <Route path='/projectselect' component={ProjectSelect} />
         <Route path='/home' component={Home} />
+        <Route path='/dashboard' component={Dashboard} />
+        <Route path='/people' component={PeoplePage} />
       </Switch>
     </>
   )

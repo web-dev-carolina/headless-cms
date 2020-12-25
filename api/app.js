@@ -164,13 +164,26 @@ app.delete("/users/:id", (req, res) => {
 // initialize Testimonial and People db, should be called after login
 let testimonialCollection;
 let peopleCollection;
+let infoCollection;
 app.post('/projects/connect', async (req, res) => {
     try {
         //TODO: Verify project exists (from project collection)
         const proj = req.body.project;
 
-        // connect to testimonial collection
+        
         dbName = "test1";
+
+        // connect to info collection
+        collectionName = "info";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+            infoCollection = dbCollection;
+            console.log('info collection connection successful');
+        }, function (err) { // failureCallback
+            throw (err);
+        });
+
+        // connect to testimonial collection
         collectionName = proj + "-testimonials";
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
@@ -195,6 +208,17 @@ app.post('/projects/connect', async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
+});
+/* Get info */
+// READ all info
+// ex. $ curl http://localhost:9000/info
+// -> all info as array of JSON
+app.get("/info", (req, res) => {
+    // respond with all items in collection
+    infoCollection.find().toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
 });
 
 /* Testimonial CRUD routes */
