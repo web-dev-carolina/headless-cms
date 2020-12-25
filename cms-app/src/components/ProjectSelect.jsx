@@ -5,14 +5,12 @@ import Axios from "axios";
 import UserContext from '../context/UserContext.js';
 import { useHistory } from "react-router-dom";
 
-
 export default function ProjectSelect() {
   const history = useHistory();
   const { userData, setUserData } = useContext(UserContext);
 
   let getProjects = function() {
-    console.log(userData);
-    return userData.userInfo.proj.slice(0, -1);
+    if (userData.userInfo) return userData.userInfo.proj.slice(0, -1);
   }
 
   async function clickHandler(project) {
@@ -27,8 +25,7 @@ export default function ProjectSelect() {
   }
 
   return (
-    <Container className="login pt-3">
-      {console.log(userData)}
+    <Container className="projectselect pt-3">
       <h3 className="text-center">Select the project you want to work on.</h3>
       <div className="projects-list pt-3">
         {getProjects().map(p =>

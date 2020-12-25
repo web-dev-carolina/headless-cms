@@ -33,7 +33,7 @@ const NavbarContainer = () => {
           {userData.userInfo ? (
             <>
             <Navbar.Text className="pr-3">Signed in as: <a>{userData.userInfo.user}</a></Navbar.Text>
-            <Button as={HLink} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
+            <Button as={HLink} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
             </>
           ) : (
             <>
@@ -41,7 +41,6 @@ const NavbarContainer = () => {
             <Button as={HLink} to="/signup" variant="outline-dark" className="ml-3">Sign up</Button>
             </>
           )}
-            
         </Navbar.Collapse>
       </Navbar>
       <Switch>

@@ -7,18 +7,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Axios from 'axios';
 
 function App() {
-  const [userData, setUserData] = useState({ token: undefined, user: undefined });
+  const [userData, setUserData] = useState({ token: undefined, userInfo: { user: undefined, proj: [undefined] } });
   const history = useHistory();
 
-  useEffect( () => {
+  useEffect(() => {
     const checkLoggedIn = async () => {
       let token = localStorage.getItem("auth-token");
       if (token == null) {
         localStorage.setItem("auth-token", "");
         token = "";
       }
-      const tokenRes = await Axios.post("http://localhost:9000/users/tokenIsValid",
-        null, {
+      const tokenRes = await Axios.post("http://localhost:9000/users/tokenIsValid", null, {
         headers: { "auth-token": token }
       });
       if (tokenRes.data.valid) {
@@ -31,17 +30,19 @@ function App() {
             activeProject: ""
           },
         });
+        history.push('/projectselect');
         console.log('already logged in');
+      } else {
+        history.push('/signin');
       }
-      history.push('/signin');
-
     }
     checkLoggedIn();
   }, []);
 
   return (
     <UserContext.Provider value={{ userData, setUserData }} >
-      <NavbarContainer />
+      <NavbarContainer>
+      </NavbarContainer>
     </UserContext.Provider>
   );
 }
