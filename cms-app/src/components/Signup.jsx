@@ -22,7 +22,6 @@ export default function Login() {
     await Axios.post(process.env.REACT_APP_API_URL+"/users/signup", signupUser);
     const loginUser = { username, password };
     const loginRes = await Axios.post(process.env.REACT_APP_API_URL+"/users/login", loginUser);
-    console.log(loginRes);
     setUserData({
       token: loginRes.data.token,
       userInfo: loginRes.data.userInfo

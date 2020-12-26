@@ -56,7 +56,6 @@ app.post("/users/tokenIsValid", async (req, res) => {
 // ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pswd":"pswd", "pswdCheck":"pswd confirmation", "proj":"[proj1, proj2]"}' http://localhost:9000/users/signup
 // -> new JSON object
 app.post('/users/signup', async (req, res) => {
-    console.log('in signup endpoint');
     // verify valid data
     const user = req.body.username;
     let pass = req.body.password;
