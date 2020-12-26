@@ -8,6 +8,7 @@ const body_parser = require('body-parser');
 const express = require('express');
 const app = express();
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
 app.use(cors());
@@ -55,15 +56,18 @@ app.post("/users/tokenIsValid", async (req, res) => {
 // ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pswd":"pswd", "pswdCheck":"pswd confirmation", "proj":"[proj1, proj2]"}' http://localhost:9000/users/signup
 // -> new JSON object
 app.post('/users/signup', async (req, res) => {
+    console.log('in signup endpoint');
     // verify valid data
     const user = req.body.username;
-    const pass = req.body.password;
+    let pass = req.body.password;
     const passCheck = req.body.passwordCheck;
     const proj = [];
     if (!user || !pass) return res.status(400).json({ msg: "missing username or password" });
     if (pass != passCheck) return res.status(400).json({ msg: "passwords do not match" });
     const existing = await userCollection.findOne({ user });
     if (existing) return res.status(400).json({ msg: "this user already exists" });
+    let salt = await bcrypt.genSalt();
+    pass = await bcrypt.hash(pass, salt);
     newUser = { user, pass, proj };
     // add the user
     userCollection.insertOne(newUser, (error, result) => {
@@ -87,11 +91,9 @@ app.post('/users/login', async (req, res) => {
         if (!user || !pass) return res.status(400).json({ msg: "missing username or password" });
         const existing = await userCollection.findOne({ user });
         if (!existing) return res.status(400).json({ msg: "this user does not exist" });
-        {
-            let isMatch = (existing.pass != pass) ? false : true;
-            // let isMatch = await bcrypt.compare(password, existing.password);
-            if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
-        }
+        console.log(existing);
+        let isMatch = await bcrypt.compare(pass, existing.pass);
+        if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
         const token = jwt.sign({ id: existing._id }, process.env.JWT_TOKEN_PASS);
         // login user
         res.json({
@@ -170,7 +172,7 @@ app.post('/projects/connect', async (req, res) => {
         //TODO: Verify project exists (from project collection)
         const proj = req.body.project;
 
-        
+
         dbName = "test1";
 
         // connect to info collection
