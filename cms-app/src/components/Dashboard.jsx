@@ -7,27 +7,33 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const Dashboard = () => {
-      // const [info, setInfo] = useState([]);
-      // useEffect(async () => {
-      //     const result = await axios('http://localhost:9000/info');
-      //     setInfo(result.data);
-      // }, []);
+      const [info, setInfo] = useState([]);
       const history = useHistory();
 
+      useEffect(async () => {
+            const result = await axios('http://localhost:9000/info');
+            setInfo(result.data[0].collections.slice(0, -1));
+      }, []);
+
+      async function clickHandler(collection) {
+            history.push('/' + collection);
+      }
+
       return (
-            <Container className="projectselect pt-3">
+            <Container className="collection-select pt-3" id="dashboard">
                   <Row>
                         <h1>Dashboard</h1>
                   </Row>
                   <h3 className="text-center">Select the collection you want to work on.</h3>
-                  <div className="projects-list pt-3">
-                        <Button variant="secondary" size="lg" block onClick={(e) => history.push('/people')}>
-                              People
-              </Button>
-                        <Button variant="secondary" size="lg" block onClick={(e) => history.push('/testimonials')}>
-                              Testimonials
-              </Button>
-                        <br></br>
+                  <div className="collections-list pt-3">
+                        {info.map(c =>
+                              <>
+                                    <Button id={c} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+                                          {c}
+                                    </Button>
+                                    <br></br>
+                              </>
+                        )}
                   </div>
             </Container>
       )

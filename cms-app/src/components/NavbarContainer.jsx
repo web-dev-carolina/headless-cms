@@ -15,11 +15,11 @@ const NavbarContainer = () => {
 
   const logout = () => {
     setUserData({
-        token: undefined,
-        userInfo: undefined
+      token: undefined,
+      userInfo: undefined
     })
     localStorage.clear();
-};
+  };
 
   return (
     <>
@@ -34,15 +34,20 @@ const NavbarContainer = () => {
           </Nav>
           {userData.token != undefined ? (
             <>
-            <Navbar.Text className="pr-3">Signed in as: <a>{userData.userInfo.user}</a></Navbar.Text>
-            <Button as={HLink} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
+              {userData.userInfo.activeProject !== "" && userData.userInfo.activeProject != undefined ? (
+                <>
+                  <Navbar.Text className="pr-3">Active project: <a>{userData.userInfo.activeProject}</a></Navbar.Text>
+                </>
+              ) : (<></>)}
+              <Navbar.Text className="pr-3">Signed in as: <a>{userData.userInfo.user}</a></Navbar.Text>
+              <Button as={HLink} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
             </>
           ) : (
-            <>
-            <Button as={HLink} to="/signin" variant="outline-dark" className="ml-3">Sign in</Button>
-            <Button as={HLink} to="/signup" variant="outline-dark" className="ml-3">Sign up</Button>
-            </>
-          )}
+              <>
+                <Button as={HLink} to="/signin" variant="outline-dark" className="ml-3">Sign in</Button>
+                <Button as={HLink} to="/signup" variant="outline-dark" className="ml-3">Sign up</Button>
+              </>
+            )}
         </Navbar.Collapse>
       </Navbar>
       <Switch>

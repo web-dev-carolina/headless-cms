@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Card from "react-bootstrap/Card";
-import { Container } from "react-bootstrap";
-import '../../styles/People.css'
+import { Container, Button } from "react-bootstrap";
+import '../../styles/People.css';
+import Modal from "react";
 
 const People = (props) => {
+    const handleShowEdit = () => (true);
+    const handleShowDelete = () => (true);
+
     return (
         <>
-            <div class="col-md-4">
-                <Card style={{ width: '25vw' }}>
+            <div className="col-md-4 pt-3" key={props.people._id}>
+                <Card style={{ width: '25vw' }} border='secondary'>
                     <Card.Body>
-                        <Card.Title>{props.people.fname} {props.people.lname}</Card.Title>
+                        <Card.Title>{props.people.fname} {props.people.fname}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">{props.people.pos}</Card.Subtitle>
                         <Card.Text>
                             {props.people.bio}
                         </Card.Text>
                         <Container className="card-buttons">
-                            <a href="#" class="btn btn-outline-primary mr-2">Edit</a>
-                            <a href="#" class="btn btn-outline-danger ml-2">Delete</a>
+                            <Button onClick={handleShowEdit} variant="outline-primary" className="mr-2">Edit</Button>
+                            <Button onClick={handleShowDelete} variant="outline-danger" className="ml-2">Delete</Button>
                         </Container>
                     </Card.Body>
                 </Card>

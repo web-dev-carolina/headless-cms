@@ -17,20 +17,24 @@ export default function ProjectSelect() {
     console.log(project);
     const projReqBody = { "project": project };
     const projRes = await Axios.post(process.env.REACT_APP_API_URL+"/projects/connect", projReqBody);
-    // setUserData({
-    //   userData,
-    //   proj: project
-    // })
+    setUserData({
+      token: userData.token,
+      userInfo:{
+        user: userData.userInfo.user,
+        proj: userData.userInfo.proj,
+        activeProject: project
+      }
+    })
     history.push('/dashboard');
   }
 
   return (
-    <Container className="projectselect pt-3">
+    <Container className="project-select pt-3" id="project-select">
       <h3 className="text-center">Select the project you want to work on.</h3>
       <div className="projects-list pt-3">
         {getProjects().map(p =>
           <>
-            <Button key={p.toString()} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+            <Button id={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
               {p}
             </Button>
             <br></br>

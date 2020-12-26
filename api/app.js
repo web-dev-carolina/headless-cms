@@ -255,6 +255,7 @@ app.get("/testimonials", (req, res) => {
 app.put("/testimonials/:id", async (req, res) => {
     const testId = req.params.id;
     const newTestimonial = req.body;
+    console.log(newTestimonial);
     testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
         if (error) throw error;
         testimonialCollection.find().toArray(function (_error, _result) {
