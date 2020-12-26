@@ -21,7 +21,7 @@ export default function ProjectSelect() {
     //   userData,
     //   proj: project
     // })
-    history.push('/home');
+    history.push('/dashboard');
   }
 
   return (
