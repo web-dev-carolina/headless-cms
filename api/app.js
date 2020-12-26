@@ -90,7 +90,6 @@ app.post('/users/login', async (req, res) => {
         if (!user || !pass) return res.status(400).json({ msg: "missing username or password" });
         const existing = await userCollection.findOne({ user });
         if (!existing) return res.status(400).json({ msg: "this user does not exist" });
-        console.log(existing);
         let isMatch = await bcrypt.compare(pass, existing.pass);
         if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
         const token = jwt.sign({ id: existing._id }, process.env.JWT_TOKEN_PASS);
@@ -136,9 +135,9 @@ app.get("/users/:id", async (req, res) => {
 app.put("/users/:id", async (req, res) => {
     const testId = req.params.id;
     const newTestimonial = req.body;
-    testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
+    userCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
         if (error) throw error;
-        testimonialCollection.find().toArray(function (_error, _result) {
+        userCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
             res.json(_result);
         });
@@ -150,9 +149,9 @@ app.put("/users/:id", async (req, res) => {
 // -> updated array of users
 app.delete("/users/:id", (req, res) => {
     const testId = req.params.id;
-    testimonialCollection.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
+    userCollection.deleteOne({ _id: new mongodb.ObjectID(testId.toString()) }, function (error, result) {
         if (error) throw error;
-        testimonialCollection.find().toArray(function (_error, _result) {
+        userCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
             res.json(_result);
         });

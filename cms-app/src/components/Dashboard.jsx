@@ -24,7 +24,7 @@ const Dashboard = () => {
               <Button variant="secondary" size="lg" block onClick={(e)=> history.push('/people')}>
                     People
               </Button>
-              <Button variant="secondary" size="lg" block>
+              <Button variant="secondary" size="lg" block onClick={(e)=> history.push('/testimonials')}>
                     Testimonials
               </Button>
               <br></br>

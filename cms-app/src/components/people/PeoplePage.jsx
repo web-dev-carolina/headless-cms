@@ -10,16 +10,17 @@ const PeoplePage = () => {
     useEffect(() => {
 
         async function fetchData() {
-            const result = await Axios.get("http://localhost:9000/people");
+            const result = await Axios.get(process.env.REACT_APP_API_URL+"/people");
             const data = result.data;
             setPeople(data);
+            console.log(data);
         }
         fetchData();
     }, []);
 
     return (
         <Container className="home pt-3">
-            <h3 className="text-center">People Collection</h3>
+            <h3 className="text-center">People Collection:</h3>
             <PeopleContainer peoples={people} />
         </Container>
 

@@ -8,6 +8,7 @@ import Signup from './Signup.jsx';
 import ProjectSelect from './ProjectSelect.jsx';
 import Home from './Home.jsx';
 import PeoplePage from './people/PeoplePage.jsx'
+import TestimonialsPage from './testimonials/TestimonialsPage.jsx';
 import UserContext from "../context/UserContext.js";
 
 const NavbarContainer = () => {
@@ -52,6 +53,7 @@ const NavbarContainer = () => {
         <Route path='/home' component={Home} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/people' component={PeoplePage} />
+        <Route path='/testimonials' component={TestimonialsPage} />
       </Switch>
     </>
   )
