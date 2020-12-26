@@ -14,9 +14,9 @@ const Testimonials = (props) => {
 
     const handleShowEdit = () => setShowEdit(true);
     const handleCloseEdit = () => setShowEdit(false);
-    const handleSaveEdit = () => {
+    const handleSaveEdit = async () => {
         const url = process.env.REACT_APP_API_URL + '/testimonials/' + props.testimony._id;
-        const editRes = Axios.put(url, {
+        const editRes = await Axios.put(url, {
             text: newText,
             author: newAuthor
         })
@@ -25,9 +25,9 @@ const Testimonials = (props) => {
 
     const handleShowDelete = () => setShowDelete(true);
     const handleCloseDelete = () => setShowDelete(false);
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         const url = process.env.REACT_APP_API_URL + '/testimonials/' + props.testimony._id;
-        const deleteRes = Axios.delete(url)
+        const deleteRes = await Axios.delete(url)
         setShowDelete(false);
     }
 
@@ -59,8 +59,8 @@ const Testimonials = (props) => {
                             <Form.Label>Text</Form.Label>
                             <Form.Control
                                 autoFocus
-                                type="text"
-
+                                as="textarea"
+                                rows={3}
                                 value={newText}
                                 onChange={(e) => setNewText(e.target.value)}
                             />

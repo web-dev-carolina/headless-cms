@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Form, Container, Button, Row } from "react-bootstrap";
+import { Form, Container, Button, Modal } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import TestimonialsContainer from './TestimonialsContainer.jsx';
@@ -8,6 +8,9 @@ import '../../styles/Testimonials.css';
 const TestimonialsPage = () => {
     const history = useHistory();
     const [testimonials, setTestimonials] = useState([]);
+    const [showCreate, setShowCreate] = useState(false);
+    const [newText, setNewText] = useState("");
+    const [newAuthor, setNewAuthor] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -18,11 +21,63 @@ const TestimonialsPage = () => {
         fetchData();
     }, []);
 
+    const showCreateModal = () => setShowCreate(true);
+    const closeCreateModal = () => setShowCreate(false);
+    const saveNewTestimonial = async () => {
+        const url = process.env.REACT_APP_API_URL + "/testimonials";
+        const postRes = await Axios.post(url, {
+            text: newText,
+            author: newAuthor
+        })
+        setShowCreate(false);
+    }
+
     return (
-        <Container className="home pt-3">
-            <h3 className="text-center">Testimonials collection:</h3>
-            <TestimonialsContainer testimonies={testimonials} />
-        </Container>
+        <>
+            <Container className="home pt-3">
+                <h3 className="text-center">Testimonials collection:</h3>
+                <Button variant="secondary" onClick={showCreateModal}>Add new testimonial</Button>
+                <TestimonialsContainer testimonies={testimonials} />
+            </Container>
+
+            <Modal show={showCreate} onHide={closeCreateModal}>
+                <Modal.Header className="border-0">
+                    <Modal.Title>Create new testimonial</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form className="">
+                        <Form.Group size="lg" controlId="email">
+                            <Form.Label>Text</Form.Label>
+                            <Form.Control
+                                autoFocus
+                                as="textarea"
+                                rows={3}
+                                placeholder="Excellent service. Will use again."
+                                value={newText}
+                                onChange={(e) => setNewText(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group size="lg" controlId="password">
+                            <Form.Label>Author</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="John Doe"
+                                value={newAuthor}
+                                onChange={(e) => setNewAuthor(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer className="border-0">
+                    <Button variant="secondary" onClick={closeCreateModal}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={saveNewTestimonial}>
+                        Save
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     )
 }
 
