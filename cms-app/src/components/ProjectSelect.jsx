@@ -1,47 +1,48 @@
-import React, { useState, useContext } from "react";
-import { Form, Container, Button } from "react-bootstrap";
+import React, { useEffect, useState, useContext } from "react";
+import { Container, Button } from "react-bootstrap";
 import "../styles/Login.css";
 import Axios from "axios";
 import UserContext from '../context/UserContext.js';
 import { useHistory } from "react-router-dom";
 
 export default function ProjectSelect() {
-  const history = useHistory();
-  const { userData, setUserData } = useContext(UserContext);
+    const history = useHistory();
+    const { userData, setUserData } = useContext(UserContext);
+    const [projectsList, setProjectsList] = useState([]);
 
-  let getProjects = function () {
-    if (userData.userInfo.proj.slice(-1) == "") return userData.userInfo.proj.slice(0,-1);
-    return userData.userInfo.proj;
-  }
+    useEffect(() => {
+        setProjectsList(userData.userInfo.proj);
+    });
 
-  async function clickHandler(project) {
-    console.log(project);
-    const projReqBody = { "project": project };
-    const projRes = await Axios.post(process.env.REACT_APP_API_URL + "/projects/connect", projReqBody);
-    setUserData({
-      token: userData.token,
-      userInfo: {
-        user: userData.userInfo.user,
-        proj: userData.userInfo.proj,
-        activeProject: project
-      }
-    })
-    history.push('/dashboard');
-  }
+    async function clickHandler(project) {
+        console.log(project);
+        const projReqBody = { "project": project };
+        await Axios.post(process.env.REACT_APP_API_URL + "/projects/connect", projReqBody);
+        setUserData({
+            token: userData.token,
+            userInfo: {
+                user: userData.userInfo.user,
+                proj: userData.userInfo.proj,
+                activeProject: project
+            }
+        })
+        history.push('/dashboard');
+    }
 
-  return (
-    <Container className="project-select pt-3" id="project-select">
-      <h3 className="text-center">Select the project you want to work on.</h3>
-      <div className="projects-list pt-3">
-        {getProjects().map(p =>
-          <>
-            <Button id={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
-              {p}
-            </Button>
-            <br></br>
-          </>
-        )}
-      </div>
-    </Container>
-  );
+    return (
+        <Container className="project-select pt-3" id="project-select">
+            <h3 className="text-center">Select the project you want to work on.</h3>
+            <div className="projects-list pt-3">
+                {projectsList.filter((p) => p !== "")
+                    .map(p =>
+                        <>
+                            <Button id={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+                                {p}
+                            </Button>
+                            <br></br>
+                        </>
+                    )}
+            </div>
+        </Container>
+    );
 }

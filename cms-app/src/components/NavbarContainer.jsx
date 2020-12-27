@@ -9,6 +9,7 @@ import ProjectSelect from './ProjectSelect.jsx';
 import PeoplePage from './people/PeoplePage.jsx'
 import TestimonialsPage from './testimonials/TestimonialsPage.jsx';
 import UserContext from "../context/UserContext.js";
+import "../styles/NavbarContainer.css";
 
 const NavbarContainer = () => {
   const { userData, setUserData } = useContext(UserContext);
@@ -32,14 +33,14 @@ const NavbarContainer = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
           </Nav>
-          {userData.token != undefined ? (
+          {userData.token !== undefined ? (
             <>
-              {userData.userInfo.activeProject !== "" && userData.userInfo.activeProject != undefined ? (
+              {userData.userInfo.activeProject !== "" && userData.userInfo.activeProject !== undefined ? (
                 <>
-                  <Navbar.Text className="pr-3">Active project: <a>{userData.userInfo.activeProject}</a></Navbar.Text>
+                  <Navbar.Text className="pr-3">Active project: <span className="black-text">{userData.userInfo.activeProject}</span></Navbar.Text>
                 </>
               ) : (<></>)}
-              <Navbar.Text className="pr-3">Signed in as: <a>{userData.userInfo.user}</a></Navbar.Text>
+              <Navbar.Text className="pr-3">Signed in as: <span className="black-text">{userData.userInfo.user}</span></Navbar.Text>
               <Button as={HLink} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
             </>
           ) : (
