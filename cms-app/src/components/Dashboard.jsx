@@ -12,7 +12,8 @@ const Dashboard = () => {
 
       useEffect(async () => {
             const result = await axios('http://localhost:9000/info');
-            setInfo(result.data[0].collections.slice(0, -1));
+            if (result.data[0].collections.slice(-1) == "") setInfo(result.data[0].collections.slice(0, -1));
+            setInfo(result.data[0].collections);
       }, []);
 
       async function clickHandler(collection) {

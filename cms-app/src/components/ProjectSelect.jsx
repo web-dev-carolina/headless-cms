@@ -9,18 +9,18 @@ export default function ProjectSelect() {
   const history = useHistory();
   const { userData, setUserData } = useContext(UserContext);
 
-  let getProjects = function() {
-    console.log(userData.userInfo.proj);
-    if (userData.userInfo) return userData.userInfo.proj.slice(0);
+  let getProjects = function () {
+    if (userData.userInfo.proj.slice(-1) == "") return userData.userInfo.proj.slice(0,-1);
+    return userData.userInfo.proj;
   }
 
   async function clickHandler(project) {
     console.log(project);
     const projReqBody = { "project": project };
-    const projRes = await Axios.post(process.env.REACT_APP_API_URL+"/projects/connect", projReqBody);
+    const projRes = await Axios.post(process.env.REACT_APP_API_URL + "/projects/connect", projReqBody);
     setUserData({
       token: userData.token,
-      userInfo:{
+      userInfo: {
         user: userData.userInfo.user,
         proj: userData.userInfo.proj,
         activeProject: project
