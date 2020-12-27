@@ -21,8 +21,8 @@ const Testimonials = (props) => {
             author: editAuthor
         })
         setShowEdit(false);
-        history.push('/dashboard');
-        history.push('/testimonials');
+        history.replace('/dashboard');
+        history.replace('/testimonials');
     }
 
     const handleShowDelete = () => setShowDelete(true);
@@ -31,8 +31,8 @@ const Testimonials = (props) => {
         const url = process.env.REACT_APP_API_URL + '/testimonials/' + props.testimony._id;
         await Axios.delete(url)
         setShowDelete(false);
-        history.push('/dashboard');
-        history.push('/testimonials');
+        history.replace('/dashboard');
+        history.replace('/testimonials');
     }
 
     return (

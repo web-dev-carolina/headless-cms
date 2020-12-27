@@ -30,8 +30,8 @@ const TestimonialsPage = () => {
             author: newAuthor
         })
         setShowCreate(false);
-        history.push('/dashboard');
-        history.push('/testimonials');
+        history.replace('/dashboard');
+        history.replace('/testimonials');
     }
 
     return (

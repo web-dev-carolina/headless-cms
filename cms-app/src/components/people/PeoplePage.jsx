@@ -32,8 +32,8 @@ const PeoplePage = () => {
             bio: newBio
         })
         setShowCreate(false);
-        history.push('/dashboard');
-        history.push('/people');
+        history.replace('/dashboard');
+        history.replace('/people');
     }
 
     return (

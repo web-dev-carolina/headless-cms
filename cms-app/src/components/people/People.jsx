@@ -25,8 +25,8 @@ const People = (props) => {
             bio: editBio
         })
         setShowEdit(false);
-        history.push('/dashboard');
-        history.push('/people');
+        history.replace('/dashboard');
+        history.replace('/people');
     }
 
     const handleShowDelete = () => setShowDelete(true);
@@ -35,8 +35,8 @@ const People = (props) => {
         const url = process.env.REACT_APP_API_URL + '/people/' + props.person._id;
         await Axios.delete(url)
         setShowDelete(false);
-        history.push('/dashboard');
-        history.push('/people');
+        history.replace('/dashboard');
+        history.replace('/people');
     }
 
     return (
