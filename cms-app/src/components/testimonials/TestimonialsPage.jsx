@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Container, Button, Modal } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
-import TestimonialsContainer from './TestimonialsContainer.jsx';
+import Testimonials from './Testimonials.jsx';
 import '../../styles/Testimonials.css';
 
 const TestimonialsPage = () => {
@@ -25,11 +25,13 @@ const TestimonialsPage = () => {
     const closeCreateModal = () => setShowCreate(false);
     const saveNewTestimonial = async () => {
         const url = process.env.REACT_APP_API_URL + "/testimonials";
-        const postRes = await Axios.post(url, {
+        await Axios.post(url, {
             text: newText,
             author: newAuthor
         })
         setShowCreate(false);
+        history.push('/dashboard');
+        history.push('/testimonials');
     }
 
     return (
@@ -37,16 +39,17 @@ const TestimonialsPage = () => {
             <Container className="home pt-3">
                 <h3 className="text-center">Testimonials collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new testimonial</Button>
-                <TestimonialsContainer testimonies={testimonials} />
+                <div className="row" key="testimonials">
+                    { testimonials.map(testimony => <Testimonials testimony={testimony} />) }
+                </div>
             </Container>
-
             <Modal show={showCreate} onHide={closeCreateModal}>
                 <Modal.Header className="border-0">
                     <Modal.Title>Create new testimonial</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form className="">
-                        <Form.Group size="lg" controlId="email">
+                        <Form.Group size="lg" controlId="text">
                             <Form.Label>Text</Form.Label>
                             <Form.Control
                                 autoFocus
@@ -57,7 +60,7 @@ const TestimonialsPage = () => {
                                 onChange={(e) => setNewText(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group size="lg" controlId="password">
+                        <Form.Group size="lg" controlId="author">
                             <Form.Label>Author</Form.Label>
                             <Form.Control
                                 type="text"
