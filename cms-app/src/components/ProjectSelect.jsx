@@ -10,7 +10,8 @@ export default function ProjectSelect() {
   const { userData, setUserData } = useContext(UserContext);
 
   let getProjects = function() {
-    if (userData.userInfo) return userData.userInfo.proj.slice(0, -1);
+    console.log(userData.userInfo.proj);
+    if (userData.userInfo) return userData.userInfo.proj.slice(0);
   }
 
   async function clickHandler(project) {
