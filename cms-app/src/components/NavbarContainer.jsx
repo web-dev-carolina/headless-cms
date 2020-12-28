@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Navbar, Nav, Button, Image, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
 import { HashLink as HLink } from 'react-router-hash-link';
 import { Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard.jsx'
@@ -8,6 +8,7 @@ import Signup from './Signup.jsx';
 import ProjectSelect from './ProjectSelect.jsx';
 import PeoplePage from './people/PeoplePage.jsx'
 import TestimonialsPage from './testimonials/TestimonialsPage.jsx';
+import TextContentPage from './text/TextContentPage.jsx';
 import UserContext from "../context/UserContext.js";
 import "../styles/NavbarContainer.css";
 import { useHistory } from 'react-router-dom';
@@ -22,18 +23,14 @@ const NavbarContainer = () => {
             userInfo: undefined
         })
         localStorage.clear();
-        history.entries = [];
-        // history.push() auto increments from the current index
-        history.index = -1;
         history.push("/login");
-        console.log(history);
     };
 
     return (
         <>
             <Navbar sticky="top" bg="light" variant="light" className="navbar" expand="sm" collapseOnSelect>
                 <Navbar.Brand className="logo-nav">
-                    {/* <Image alt="logo" src={require("../images/wdc-circle-logo.png")} width="30" height="30" className="d-inline-block align-top" /> */}
+                    {/* <img alt="logo" src={require("../images/wdc-circle-logo.png")} width="30" height="30" className="d-inline-block align-top" /> */}
           &ensp; Web Dev Carolina CMS
         </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -68,6 +65,7 @@ const NavbarContainer = () => {
                         <Route path='/dashboard' component={Dashboard} />
                         <Route path='/people' component={PeoplePage} />
                         <Route path='/testimonials' component={TestimonialsPage} />
+                        <Route path='/text' component={TextContentPage} />
                     </>
                 ) : (
                         <>

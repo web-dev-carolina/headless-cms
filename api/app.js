@@ -80,7 +80,7 @@ app.post('/users/signup', async (req, res) => {
 });
 
 // LOGIN user
-// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"user":"username", "pass":"pswd"}' http://localhost:9000/users/login
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{"username":"user", "password":"pswd"}' http://localhost:9000/users/login
 // -> new JSON object
 app.post('/users/login', async (req, res) => {
     try {
@@ -165,6 +165,7 @@ app.delete("/users/:id", (req, res) => {
 let testimonialCollection;
 let peopleCollection;
 let infoCollection;
+let textCollection;
 app.post('/projects/connect', async (req, res) => {
     try {
         //TODO: Verify project exists (from project collection)
@@ -200,6 +201,17 @@ app.post('/projects/connect', async (req, res) => {
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             peopleCollection = dbCollection;
             console.log('people collection connection successful');
+        }, function (err) { // failureCallback
+            throw (err);
+        });
+
+        // connect to people collection
+        // defined above - const dbName = "test1";
+        collectionName = proj + "-text";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+            textCollection = dbCollection;
+            console.log('text collection connection successful');
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -279,7 +291,6 @@ app.delete("/testimonials/:id", (req, res) => {
     });
 });
 
-
 /* People CRUD routes */
 
 // CREATE new people
@@ -323,14 +334,83 @@ app.put("/people/:id", async (req, res) => {
     });
 });
 
-// DESTROY a testimonial
+// DESTROY a people
 // ex. curl -X DELETE http://localhost:9000/people/{peopleID}
-// -> updated array of testimonial objects
+// -> updated array of people objects
 app.delete("/people/:id", (req, res) => {
     const peepId = req.params.id;
     peopleCollection.deleteOne({ _id: new mongodb.ObjectID(peepId.toString()) }, function (error, result) {
         if (error) throw error;
         peopleCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
+    });
+});
+
+/* TextContent CRUD routes */
+
+// CREATE new text cotnent
+// ex. $ curl -X POST -H "Content-Type: application/json" -d '{}' http://localhost:9000/textContent
+// -> new JSON object
+app.post("/textContent", (req, res) => {
+    const newTestimonial = req.body;
+    textCollection.insertOne(newTestimonial, (error, result) => {
+        if (error) throw error;
+        // respond with all items in collection
+        testimonialCollection.find().toArray((_error, _result) => {
+            if (_error) throw _error;
+            res.json(_result);
+        });
+    });
+});
+
+// READ text areas for the project
+// ex. $ curl http://localhost:9000/textSections
+// -> all testimonials as array of JSON
+app.get("/textSections", (req, res) => {
+    // respond with the sections item
+    textCollection.find({ sections: { $exists: true } }).toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
+});
+
+// READ all text content
+// ex. $ curl http://localhost:9000/textContent
+// -> all testimonials as array of JSON
+app.get("/textContent", (req, res) => {
+    // respond with all items in collection
+    textCollection.find({ sections: { $exists: false } }).toArray((error, result) => {
+        if (error) throw error;
+        res.json(result);
+    });
+});
+
+// UPDATE a text block
+// ex. $ curl -X PUT -H "Content-Type: application/json" -d '{}' http://localhost:9000/textContent/{textID}
+// -> JSON object matching the id
+app.put("/textContent/:id", async (req, res) => {
+    const textId = req.params.id;
+    const newText = req.body;
+    console.log(newText);
+    textCollection.updateOne({ _id: new mongodb.ObjectID(textId.toString()) }, { $set: newText }, function (error, result) {
+        if (error) throw error;
+        textCollection.find().toArray(function (_error, _result) {
+            if (_error) throw error;
+            res.json(_result);
+        });
+    });
+});
+
+// DESTROY a text block
+// ex. curl -X DELETE http://localhost:9000/textContent/{textID}
+// -> updated array of text block objects
+app.delete("/textContent/:id", (req, res) => {
+    const textId = req.params.id;
+    textCollection.deleteOne({ _id: new mongodb.ObjectID(textId.toString()) }, function (error, result) {
+        if (error) throw error;
+        textCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
             res.json(_result);
         });

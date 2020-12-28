@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Button, Row } from "react-bootstrap";
 import "../styles/Login.css";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
+import Axios from "axios";
 
 const Dashboard = () => {
     const [collectionsList, setCollectionsList] = useState([]);
@@ -10,23 +10,23 @@ const Dashboard = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const result = await axios('http://localhost:9000/info');
+            const result = await Axios.get('http://localhost:9000/info');
             setCollectionsList(result.data[0].collections);
         }
         fetchData();
     }, []);
 
     async function clickHandler(collection) {
-        history.push('/' + collection);
+        history.push('/' + collection.toString().toLowerCase());
     }
 
     return (
-        <Container className="collection-select pt-3" id="dashboard">
-            <Row>
+        <>
+            <Container>
                 <h1>Dashboard</h1>
-            </Row>
-            <h3 className="text-center">Select the collection you want to work on.</h3>
-            <div className="collections-list pt-3">
+                <h3 className="text-center">Select the collection you want to work on.</h3>
+            </Container>
+            <Container className="collections-list col-md-6 pt-3" id="collection-select">
                 {collectionsList.filter((c) => c !== "")
                     .map(c =>
                         <>
@@ -36,8 +36,8 @@ const Dashboard = () => {
                             <br></br>
                         </>
                     )}
-            </div>
-        </Container>
+            </Container>
+        </>
     )
 }
 
