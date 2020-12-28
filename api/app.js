@@ -393,7 +393,6 @@ app.get("/textContent", (req, res) => {
 app.put("/textContent/:id", async (req, res) => {
     const textId = req.params.id;
     const newText = req.body;
-    console.log(newText);
     textCollection.updateOne({ _id: new mongodb.ObjectID(textId.toString()) }, { $set: newText }, function (error, result) {
         if (error) throw error;
         textCollection.find().toArray(function (_error, _result) {
