@@ -33,8 +33,7 @@ export default function Login() {
   return (
     <Container className="signup pt-3">
       <h3 className="text-center">Create an account to manage your site.</h3>
-      <h5 className="text-center">This will automatically send a request for write permissions.</h5>
-      <h5 className="text-center">You will be notified when your permissions are assigned.</h5>
+      <h5 className="text-center">This will automatically send a request for write permissions. You will be notified when permissions are assigned. </h5>
       <Form onSubmit={handleSubmit} className="pt-3">
         <Form.Group size="lg" controlId="email">
           <Form.Label>Username</Form.Label>
