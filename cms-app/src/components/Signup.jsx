@@ -33,13 +33,14 @@ export default function Login() {
   return (
     <Container className="signup pt-3">
       <h3 className="text-center">Create an account to manage your site.</h3>
-      <h5 className="text-center">This will automatically send a request for write permissions. You will be notified when permissions are assigned. </h5>
+      <h5 className="text-center">Signing up will automatically send a request for write permissions. You will be notified when your permissions are assigned. </h5>
       <Form onSubmit={handleSubmit} className="pt-3">
         <Form.Group size="lg" controlId="email">
           <Form.Label>Username</Form.Label>
           <Form.Control
             autoFocus
             type="text"
+            placeholder="johnny_appleseed"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -48,6 +49,7 @@ export default function Login() {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            placeholder="•••••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -57,6 +59,7 @@ export default function Login() {
           <Form.Control
             type="password"
             value={passwordCheck}
+            placeholder="•••••••••••"
             onChange={(e) => setPasswordCheck(e.target.value)}
           />
         </Form.Group>
