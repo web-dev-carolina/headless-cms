@@ -91,6 +91,7 @@ const TextContentPage = () => {
                                     <option>{a}</option>
                                 )}
                             </Form.Control>
+                            <Form.Text muted>You must click on a section for it to save</Form.Text>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

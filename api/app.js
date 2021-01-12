@@ -24,7 +24,6 @@ let collectionName = "cms-app";
 let userCollection;
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     userCollection = dbCollection;
-    console.log('users collection connection successful');
 }, function (err) { // failureCallback
     throw (err);
 });
@@ -179,7 +178,6 @@ app.post('/projects/connect', async (req, res) => {
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             infoCollection = dbCollection;
-            console.log('info collection connection successful');
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -189,7 +187,6 @@ app.post('/projects/connect', async (req, res) => {
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             testimonialCollection = dbCollection;
-            console.log('testimonial collection connection successful');
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -200,7 +197,6 @@ app.post('/projects/connect', async (req, res) => {
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             peopleCollection = dbCollection;
-            console.log('people collection connection successful');
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -211,7 +207,6 @@ app.post('/projects/connect', async (req, res) => {
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             textCollection = dbCollection;
-            console.log('text collection connection successful');
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -267,7 +262,6 @@ app.get("/testimonials", (req, res) => {
 app.put("/testimonials/:id", async (req, res) => {
     const testId = req.params.id;
     const newTestimonial = req.body;
-    console.log(newTestimonial);
     testimonialCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
         if (error) throw error;
         testimonialCollection.find().toArray(function (_error, _result) {
