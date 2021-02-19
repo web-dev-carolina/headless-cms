@@ -133,8 +133,8 @@ app.get("/users/:id", async (req, res) => {
 // -> updated JSON object matching the id
 app.put("/users/:id", async (req, res) => {
     const testId = req.params.id;
-    const newTestimonial = req.body;
-    userCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newTestimonial }, function (error, result) {
+    const newInfo = req.body;
+    userCollection.updateOne({ _id: new mongodb.ObjectID(testId.toString()) }, { $set: newInfo }, function (error, result) {
         if (error) throw error;
         userCollection.find().toArray(function (_error, _result) {
             if (_error) throw error;
