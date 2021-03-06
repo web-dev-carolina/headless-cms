@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Breadcrumb } from "react-bootstrap";
 import "../styles/ProjectSelect.css";
 import Axios from "axios";
 import UserContext from '../context/UserContext.js';
@@ -16,20 +16,28 @@ export default function ProjectSelect() {
 
     async function clickHandler(project) {
         const projReqBody = { "project": project };
-        await Axios.post(process.env.REACT_APP_API_URL + "/projects/connect", projReqBody);
-        setUserData({
-            token: userData.token,
-            userInfo: {
-                user: userData.userInfo.user,
-                proj: userData.userInfo.proj,
-                activeProject: project
-            }
-        })
-        history.push('/dashboard');
+        await Axios.post(process.env.REACT_APP_API_URL + "/projects/connect", projReqBody)
+        .then((response) => {
+            setUserData({
+                token: userData.token,
+                userInfo: {
+                    user: userData.userInfo.user,
+                    proj: userData.userInfo.proj,
+                    activeProject: project
+                }
+            })
+            history.push('/dashboard');
+        }, (error) => {
+            alert(error);
+        });
+        
     }
 
     return (
         <>
+        <Breadcrumb>
+            <Breadcrumb.Item active>Projects</Breadcrumb.Item>
+        </Breadcrumb>
         <h3 className="text-center pt-3">Select the project you want to work on.</h3>
         <Container className="project-select col-md-6" id="project-select">
             <div className="projects-list pt-3">

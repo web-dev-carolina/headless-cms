@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Row } from "react-bootstrap";
+import { Container, Button, Row, Breadcrumb } from "react-bootstrap";
 import "../styles/Login.css";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
@@ -22,6 +22,10 @@ const Dashboard = () => {
 
     return (
         <>
+            <Breadcrumb>
+                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
+                <Breadcrumb.Item active>Collections</Breadcrumb.Item>
+            </Breadcrumb>
             <Container>
                 <h1>Dashboard</h1>
                 <h3 className="text-center">Select the collection you want to work on.</h3>
