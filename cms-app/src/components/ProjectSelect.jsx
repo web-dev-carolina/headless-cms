@@ -16,7 +16,7 @@ export default function ProjectSelect() {
 
     async function clickHandler(project) {
         const projReqBody = { "project": project };
-        await Axios.post(process.env.REACT_APP_API_URL + "/projects/connect", projReqBody)
+        await Axios.post(process.env.REACT_APP_API_URL + "/info/projectsConnect", projReqBody)
         .then((response) => {
             setUserData({
                 token: userData.token,

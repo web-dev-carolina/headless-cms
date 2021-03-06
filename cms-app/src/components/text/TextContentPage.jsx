@@ -19,7 +19,7 @@ const TextContentPage = () => {
         async function fetchData() {
             const contentRes = await Axios.get(process.env.REACT_APP_API_URL + "/textContent");
             setTextContent(contentRes.data);
-            const areasRes = await Axios.get(process.env.REACT_APP_API_URL + "/textSections");
+            const areasRes = await Axios.get(process.env.REACT_APP_API_URL + "/textContent/sections");
             setTextAreas(areasRes.data[0].sections);
         }
         fetchData();
