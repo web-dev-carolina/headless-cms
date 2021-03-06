@@ -36,11 +36,11 @@ const TestimonialsPage = () => {
 
     return (
         <>
-            <Breadcrumb>
+            {/* <Breadcrumb>
                 <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
                 <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
                 <Breadcrumb.item active>Testimonials</Breadcrumb.item>
-            </Breadcrumb>
+            </Breadcrumb> */}
             <Container className="home pt-3">
                 <h3 className="text-center">Testimonials collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new testimonial</Button>

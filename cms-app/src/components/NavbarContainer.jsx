@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-import { Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
-import { HashLink as HLink } from 'react-router-hash-link';
-import { Route, Switch } from 'react-router-dom';
+import { Navbar, Nav, Button } from 'react-bootstrap';
+import { Route, Switch, Link } from 'react-router-dom';
 import Dashboard from './Dashboard.jsx'
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
@@ -45,12 +44,12 @@ const NavbarContainer = () => {
                                 </>
                             ) : (<></>)}
                             <Navbar.Text className="pr-3">Signed in as: <span className="black-text">{userData.userInfo.user}</span></Navbar.Text>
-                            <Button as={HLink} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
+                            <Button as={Link} onClick={logout} to="signin" variant="outline-dark" className="ml-3">Log out</Button>
                         </>
                     ) : (
                             <>
-                                <Button as={HLink} to="/signin" variant="outline-dark" className="ml-3">Sign in</Button>
-                                <Button as={HLink} to="/signup" variant="outline-dark" className="ml-3">Sign up</Button>
+                                <Button as={Link} to="/signin" variant="outline-dark" className="ml-3">Sign in</Button>
+                                <Button as={Link} to="/signup" variant="outline-dark" className="ml-3">Sign up</Button>
                             </>
                         )}
                 </Navbar.Collapse>

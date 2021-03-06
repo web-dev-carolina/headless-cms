@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Row, Breadcrumb } from "react-bootstrap";
 import "../styles/Login.css";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Axios from "axios";
 
 const Dashboard = () => {
@@ -23,7 +23,7 @@ const Dashboard = () => {
     return (
         <>
             <Breadcrumb>
-                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projectselect" }}>Projects</Breadcrumb.Item>
                 <Breadcrumb.Item active>Collections</Breadcrumb.Item>
             </Breadcrumb>
             <Container>

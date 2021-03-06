@@ -5,6 +5,10 @@ var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
 
 // routes from "/testimonials"
+let testimonialCollection;
+const init = (collection) => {
+    testimonialCollection = collection;
+}
 
 /* Testimonial CRUD routes */
 
@@ -63,4 +67,4 @@ app.delete("/:id", (req, res) => {
     });
 });
 
-module.exports = app;
+module.exports = { app, init };

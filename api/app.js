@@ -32,9 +32,9 @@ const textRouter = require('./routes/text.js');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/info', infoRouter);
-app.use('/people', peopleRouter);
-app.use('/testimonials', testimonialsRouter);
-app.use('/textContent', textRouter);
+app.use('/people', peopleRouter.app);
+app.use('/testimonials', testimonialsRouter.app);
+app.use('/textContent', textRouter.app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

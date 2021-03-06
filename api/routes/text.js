@@ -5,6 +5,10 @@ var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
 
 // routes from "/textContent"
+let textCollection;
+const init = (collection) => {
+    textCollection = collection;
+}
 
 /* TextContent CRUD routes */
 
@@ -12,8 +16,8 @@ var ObjectID = require('mongodb').ObjectID;
 // ex. $ curl -X POST -H "Content-Type: application/json" -d '{}' http://localhost:9000/textContent
 // -> new JSON object
 app.post("/", (req, res) => {
-    const newTestimonial = req.body;
-    textCollection.insertOne(newTestimonial, (error, result) => {
+    const newText = req.body;
+    textCollection.insertOne(newText, (error, result) => {
         if (error) throw error;
         // respond with all items in collection
         testimonialCollection.find().toArray((_error, _result) => {
@@ -74,4 +78,4 @@ app.delete("/:id", (req, res) => {
     });
 });
 
-module.exports = app;
+module.exports = {app,init};

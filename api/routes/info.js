@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
 const db = require("../db.js");
+const people = require("./people.js");
+const testimonials = require("./testimonials.js");
+const text = require("./text.js");
 
 // routes from "/info"
 
@@ -11,13 +14,9 @@ const db = require("../db.js");
 // CONNECT to user's project
 // ex. curl -X POST -H "Content-Type: application/json" -d '{"project":"projectName"}' http://localhost:9000/info/projectsConnect
 // initialize Testimonial and People db, should be called after login
-let testimonialCollection;
-let peopleCollection;
 let infoCollection;
-let textCollection;
 app.post('/projectsConnect', async (req, res) => {
     try {
-        console.log(req);
         //TODO: Verify project exists (from project collection)
         const proj = req.body.project;
 
@@ -36,7 +35,7 @@ app.post('/projectsConnect', async (req, res) => {
         collectionName = proj + "-testimonials";
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-            testimonialCollection = dbCollection;
+            testimonials.init(dbCollection);
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -46,7 +45,7 @@ app.post('/projectsConnect', async (req, res) => {
         collectionName = proj + "-people";
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-            peopleCollection = dbCollection;
+            people.init(dbCollection);
         }, function (err) { // failureCallback
             throw (err);
         });
@@ -56,7 +55,7 @@ app.post('/projectsConnect', async (req, res) => {
         collectionName = proj + "-text";
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-            textCollection = dbCollection;
+            text.init(dbCollection);
         }, function (err) { // failureCallback
             throw (err);
         });

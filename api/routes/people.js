@@ -3,8 +3,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
+const db = require("../db.js");
 
 // routes from "/people"
+let peopleCollection;
+const init = (collection) => {
+    peopleCollection = collection;
+}
 
 /* People CRUD routes */
 
@@ -27,6 +32,7 @@ app.post("/", (req, res) => {
 // ex. $ curl http://localhost:9000/people
 // -> all testimonials as JSON
 app.get("/", (req, res) => {
+    console.log("get all people");
     // respond with all items in collection
     peopleCollection.find().toArray((error, result) => {
         if (error) throw error;
@@ -63,4 +69,4 @@ app.delete("/:id", (req, res) => {
     });
 });
 
-module.exports = app;
+module.exports = {app, init};

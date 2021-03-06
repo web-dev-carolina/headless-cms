@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Container, Button, Modal, Row, Col, Breadcrumb } from "react-bootstrap";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import People from './People.jsx';
 const PeoplePage = () => {
     const history = useHistory();
@@ -17,6 +17,7 @@ const PeoplePage = () => {
             const result = await Axios.get(process.env.REACT_APP_API_URL + "/people");
             const data = result.data;
             setPeople(data);
+            console.log(data);
         }
         fetchData();
     }, []);
@@ -24,7 +25,7 @@ const PeoplePage = () => {
     const showCreateModal = () => setShowCreate(true);
     const closeCreateModal = () => setShowCreate(false);
     const saveNewPerson = async () => {
-        const url = process.env.REACT_APP_API_URL + "/people";
+        const url = process.env.REACT_APP_API_URL + "/people/";
         await Axios.post(url, {
             fname: newFname,
             lname: newLname,
@@ -39,10 +40,10 @@ const PeoplePage = () => {
     return (
         <>
             <Breadcrumb>
-                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
-                <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{to:"/projectselect"}}>Projects</Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{to:"/dashboard"}}>Collections</Breadcrumb.Item>
                 <Breadcrumb.item active>People</Breadcrumb.item>
-            </Breadcrumb>
+            </Breadcrumb> 
             <Container className="home pt-3">
                 <h3 className="text-center">People collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new organization member</Button>

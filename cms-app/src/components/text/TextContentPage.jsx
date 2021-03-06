@@ -41,11 +41,11 @@ const TextContentPage = () => {
 
     return (
         <>
-            <Breadcrumb>
+            {/* <Breadcrumb>
                 <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
                 <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
                 <Breadcrumb.item active>Text</Breadcrumb.item>
-            </Breadcrumb>
+            </Breadcrumb> */}
             <Container className="home pt-3">
                 <h3 className="text-center">Text content collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal} className="mb-3">Add new text block</Button>
