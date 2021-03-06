@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Container, Button, Modal } from "react-bootstrap";
+import { Form, Container, Button, Modal, Breadcrumb } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import Testimonials from './Testimonials.jsx';
@@ -36,6 +36,11 @@ const TestimonialsPage = () => {
 
     return (
         <>
+            <Breadcrumb>
+                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
+                <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
+                <Breadcrumb.item active>Testimonials</Breadcrumb.item>
+            </Breadcrumb>
             <Container className="home pt-3">
                 <h3 className="text-center">Testimonials collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new testimonial</Button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Container, Button, Modal } from "react-bootstrap";
+import { Form, Container, Button, Modal, Breadcrumb } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import TextContent from './TextContent.jsx';
@@ -41,6 +41,11 @@ const TextContentPage = () => {
 
     return (
         <>
+            <Breadcrumb>
+                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
+                <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
+                <Breadcrumb.item active>Text</Breadcrumb.item>
+            </Breadcrumb>
             <Container className="home pt-3">
                 <h3 className="text-center">Text content collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal} className="mb-3">Add new text block</Button>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Form, Container, Button, Modal, Row, Col } from "react-bootstrap";
+import { Form, Container, Button, Modal, Row, Col, Breadcrumb } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import People from './People.jsx';
@@ -38,6 +38,11 @@ const PeoplePage = () => {
 
     return (
         <>
+            <Breadcrumb>
+                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
+                <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
+                <Breadcrumb.item active>People</Breadcrumb.item>
+            </Breadcrumb>
             <Container className="home pt-3">
                 <h3 className="text-center">People collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new organization member</Button>
