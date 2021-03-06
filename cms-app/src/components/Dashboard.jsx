@@ -34,7 +34,7 @@ const Dashboard = () => {
                 {collectionsList.filter((c) => c !== "")
                     .map(c =>
                         <>
-                            <Button id={c} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+                            <Button key={c} id={c} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
                                 {c}
                             </Button>
                             <br></br>

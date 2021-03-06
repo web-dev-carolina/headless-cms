@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Container, Button, Modal, Breadcrumb } from "react-bootstrap";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import TextContent from './TextContent.jsx';
 import '../../styles/TextContent.css';
 
@@ -20,7 +20,9 @@ const TextContentPage = () => {
             const contentRes = await Axios.get(process.env.REACT_APP_API_URL + "/textContent");
             setTextContent(contentRes.data);
             const areasRes = await Axios.get(process.env.REACT_APP_API_URL + "/textContent/sections");
-            setTextAreas(areasRes.data[0].sections);
+            if (areasRes.data[0] !== undefined) {
+                setTextAreas(areasRes.data[0].sections);
+            }
         }
         fetchData();
     }, []);
@@ -41,11 +43,11 @@ const TextContentPage = () => {
 
     return (
         <>
-            {/* <Breadcrumb>
-                <Breadcrumb.Item href="/projectselect">Projects</Breadcrumb.Item>
-                <Breadcrumb.Item href="/dashboard">Collections</Breadcrumb.Item>
-                <Breadcrumb.item active>Text</Breadcrumb.item>
-            </Breadcrumb> */}
+            <Breadcrumb>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projectselect" }}>Projects</Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/dashboard" }}>Collections</Breadcrumb.Item>
+                <Breadcrumb.Item active>Text Content</Breadcrumb.Item>
+            </Breadcrumb>
             <Container className="home pt-3">
                 <h3 className="text-center">Text content collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal} className="mb-3">Add new text block</Button>

@@ -11,6 +11,7 @@ import TextContentPage from './text/TextContentPage.jsx';
 import UserContext from "../context/UserContext.js";
 import "../styles/NavbarContainer.css";
 import { useHistory } from 'react-router-dom';
+import logo from "../images/wdc-circle-logo.png";
 
 const NavbarContainer = () => {
     const { userData, setUserData } = useContext(UserContext);
@@ -29,8 +30,8 @@ const NavbarContainer = () => {
         <>
             <Navbar sticky="top" bg="light" variant="light" className="navbar" expand="sm" collapseOnSelect>
                 <Navbar.Brand className="logo-nav">
-                    {/* <img alt="logo" src={require("../images/wdc-circle-logo.png")} width="30" height="30" className="d-inline-block align-top" /> */}
-          &ensp; Web Dev Carolina CMS
+                    <img alt="logo" src={logo} width="30" height="30" className="d-inline-block align-top" />
+          &ensp; CMS
         </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

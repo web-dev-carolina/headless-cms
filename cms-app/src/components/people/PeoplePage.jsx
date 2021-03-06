@@ -42,7 +42,7 @@ const PeoplePage = () => {
             <Breadcrumb>
                 <Breadcrumb.Item linkAs={Link} linkProps={{to:"/projectselect"}}>Projects</Breadcrumb.Item>
                 <Breadcrumb.Item linkAs={Link} linkProps={{to:"/dashboard"}}>Collections</Breadcrumb.Item>
-                <Breadcrumb.item active>People</Breadcrumb.item>
+                <Breadcrumb.Item active>People</Breadcrumb.Item>
             </Breadcrumb> 
             <Container className="home pt-3">
                 <h3 className="text-center">People collection:</h3>

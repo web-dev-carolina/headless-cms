@@ -12,46 +12,46 @@ export default function ProjectSelect() {
 
     useEffect(() => {
         setProjectsList(userData.userInfo.proj);
-    });
+    }, []);
 
     async function clickHandler(project) {
         const projReqBody = { "project": project };
         await Axios.post(process.env.REACT_APP_API_URL + "/info/projectsConnect", projReqBody)
-        .then((response) => {
-            setUserData({
-                token: userData.token,
-                userInfo: {
-                    user: userData.userInfo.user,
-                    proj: userData.userInfo.proj,
-                    activeProject: project
-                }
-            })
-            history.push('/dashboard');
-        }, (error) => {
-            alert(error);
-        });
-        
+            .then((response) => {
+                setUserData({
+                    token: userData.token,
+                    userInfo: {
+                        user: userData.userInfo.user,
+                        proj: userData.userInfo.proj,
+                        activeProject: project
+                    }
+                })
+                history.push('/dashboard');
+            }, (error) => {
+                alert(error);
+            });
+
     }
 
     return (
         <>
-        <Breadcrumb>
-            <Breadcrumb.Item active>Projects</Breadcrumb.Item>
-        </Breadcrumb>
-        <h3 className="text-center pt-3">Select the project you want to work on.</h3>
-        <Container className="project-select col-md-6" id="project-select">
-            <div className="projects-list pt-3">
-                {projectsList.filter((p) => p !== "")
-                    .map(p =>
-                        <>
-                            <Button id={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
-                                {p}
-                            </Button>
-                            <br></br>
-                        </>
-                    )}
-            </div>
-        </Container>
+            <Breadcrumb>
+                <Breadcrumb.Item active>Projects</Breadcrumb.Item>
+            </Breadcrumb>
+            <h3 className="text-center pt-3">Select the project you want to work on.</h3>
+            <Container className="project-select col-md-6" id="project-select">
+                <div className="projects-list pt-3">
+                    {projectsList.filter((p) => p !== "")
+                        .map(p =>
+                            <>
+                                <Button id={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+                                    {p}
+                                </Button>
+                                <br></br>
+                            </>
+                        )}
+                </div>
+            </Container>
         </>
     );
 }
