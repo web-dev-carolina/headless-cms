@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 var mongodb = require("mongodb");
 var ObjectID = require('mongodb').ObjectID;
+const db = require("../db.js");
 
 // routes from "/info"
 
