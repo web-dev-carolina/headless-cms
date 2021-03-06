@@ -29,12 +29,16 @@ const infoRouter = require('./routes/info.js');
 const peopleRouter = require('./routes/people.js');
 const testimonialsRouter = require('./routes/testimonials.js');
 const textRouter = require('./routes/text.js');
+const announcementsRouter = require('./routes/announcements.js');
+const articlesRouter = require('./routes/articles.js');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/info', infoRouter);
 app.use('/people', peopleRouter.app);
 app.use('/testimonials', testimonialsRouter.app);
 app.use('/textContent', textRouter.app);
+app.use('/announcements', announcementsRouter.app);
+app.use('/articles', articlesRouter.app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

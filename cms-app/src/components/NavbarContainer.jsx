@@ -8,6 +8,8 @@ import ProjectSelect from './ProjectSelect.jsx';
 import PeoplePage from './people/PeoplePage.jsx'
 import TestimonialsPage from './testimonials/TestimonialsPage.jsx';
 import TextContentPage from './text/TextContentPage.jsx';
+import AnnouncementsPage from './announcements/AnnouncementsPage.jsx';
+import ArticlesPage from './articles/ArticlesPage.jsx';
 import UserContext from "../context/UserContext.js";
 import "../styles/NavbarContainer.css";
 import { useHistory } from 'react-router-dom';
@@ -66,6 +68,8 @@ const NavbarContainer = () => {
                         <Route path='/people' component={PeoplePage} />
                         <Route path='/testimonials' component={TestimonialsPage} />
                         <Route path='/text' component={TextContentPage} />
+                        <Route path='/announcements' component={AnnouncementsPage} />
+                        <Route path='/articles' component={ArticlesPage} />
                     </>
                 ) : (
                         <>
@@ -74,6 +78,8 @@ const NavbarContainer = () => {
                             <Route path='/dashboard' component={Login} />
                             <Route path='/people' component={Login} />
                             <Route path='/testimonials' component={Login} />
+                            <Route path='/announcements' component={Login} />
+                            <Route path='/articles' component={Login} />
                         </>
                     )}
             </Switch>

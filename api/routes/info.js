@@ -1,12 +1,10 @@
 const app = require('express').Router();
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-var mongodb = require("mongodb");
-var ObjectID = require('mongodb').ObjectID;
 const db = require("../db.js");
 const people = require("./people.js");
 const testimonials = require("./testimonials.js");
 const text = require("./text.js");
+const announcements = require("./announcements.js");
+const articles = require("./articles.js");
 
 // routes from "/info"
 
@@ -19,8 +17,7 @@ app.post('/projectsConnect', async (req, res) => {
     try {
         //TODO: Verify project exists (from project collection)
         const proj = req.body.project;
-
-        dbName = "test1";
+        const dbName = "test1";
 
         // connect to info collection
         collectionName = "info";
@@ -50,7 +47,7 @@ app.post('/projectsConnect', async (req, res) => {
             throw (err);
         });
 
-        // connect to people collection
+        // connect to text collection
         // defined above - const dbName = "test1";
         collectionName = proj + "-text";
         console.log("attempting connection to: " + collectionName);
@@ -60,6 +57,25 @@ app.post('/projectsConnect', async (req, res) => {
             throw (err);
         });
 
+        // connect to announcements collection
+        // defined above - const dbName = "test1";
+        collectionName = proj + "-announcements";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+            announcements.init(dbCollection);
+        }, function (err) { // failureCallback
+            throw (err);
+        });
+
+        // connect to articles collection
+        // defined above - const dbName = "test1";
+        collectionName = proj + "-articles";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+            articles.init(dbCollection);
+        }, function (err) { // failureCallback
+            throw (err);
+        });
         res.json(200);
     } catch (err) {
         res.status(500).json(err);
