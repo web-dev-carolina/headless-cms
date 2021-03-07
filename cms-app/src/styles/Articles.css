@@ -1,0 +1,12 @@
+.edit-article-modal {
+    min-width: 80%;
+}
+
+.article-author-date {
+    font-style: italic;
+}
+
+.article-title {
+    font-weight: bold;
+    font-size: 130%;
+}

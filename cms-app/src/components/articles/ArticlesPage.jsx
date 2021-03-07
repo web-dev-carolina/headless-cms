@@ -25,7 +25,7 @@ const ArticlesPage = () => {
             setArticles(data);
         }
         fetchData();
-    }, [history]);
+    }, []);
 
     const showCreateModal = () => setShowCreate(true);
     const closeCreateModal = () => setShowCreate(false);
@@ -63,7 +63,7 @@ const ArticlesPage = () => {
                 <Modal.Body>
                     <Form className="">
                         <Form.Group size="lg" controlId="text">
-                            <Form.Label>Text</Form.Label>
+                            <Form.Label>Article Body</Form.Label>
                             <Form.Control
                                 autoFocus
                                 as="textarea"

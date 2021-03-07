@@ -32,8 +32,8 @@ const NavbarContainer = () => {
         <>
             <Navbar sticky="top" bg="light" variant="light" className="navbar" expand="sm" collapseOnSelect>
                 <Navbar.Brand className="logo-nav">
-                    <img alt="logo" src={logo} width="30" height="30" className="d-inline-block align-top" />
-          &ensp; CMS
+                    <img alt="logo" src={logo} width="40" height="40" className="d-inline-block align-top" />
+          &ensp; Content Manager
         </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
