@@ -17,7 +17,6 @@ const PeoplePage = () => {
             const result = await Axios.get(process.env.REACT_APP_API_URL + "/people");
             const data = result.data;
             setPeople(data);
-            console.log(data);
         }
         fetchData();
     }, []);

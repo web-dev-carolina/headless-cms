@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Button, Row, Breadcrumb } from "react-bootstrap";
 import "../styles/Login.css";
 import { useHistory, Link } from "react-router-dom";
-import Axios from "axios";
+import DbContext from '../context/DbContext.js';
 
 const Dashboard = () => {
-    const [collectionsList, setCollectionsList] = useState([]);
+    const db = useContext(DbContext);
     const history = useHistory();
-
-    useEffect(() => {
-        async function fetchData() {
-            const result = await Axios.get('http://localhost:9000/info');
-            setCollectionsList(result.data[0].collections);
-        }
-        fetchData();
-    }, []);
-
-    async function clickHandler(collection) {
+    function clickHandler(collection) {
         history.push('/' + collection.toString().toLowerCase());
     }
+    const collectionsList = db.dbInfo.collections;
 
     return (
         <>

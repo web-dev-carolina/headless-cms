@@ -17,7 +17,7 @@ export default function ProjectSelect() {
     async function clickHandler(project) {
         const projReqBody = { "project": project };
         await Axios.post(process.env.REACT_APP_API_URL + "/info/projectsConnect", projReqBody)
-            .then((response) => {
+            .then((res) => {
                 setUserData({
                     token: userData.token,
                     userInfo: {
@@ -30,7 +30,6 @@ export default function ProjectSelect() {
             }, (error) => {
                 alert(error);
             });
-
     }
 
     return (

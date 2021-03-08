@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Container, Button, Modal, Breadcrumb } from "react-bootstrap";
+import { Form, Container, Button, Modal, Breadcrumb, Col } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory, Link } from "react-router-dom";
 import Articles from './Articles.jsx';
 import '../../styles/Articles.css';
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import RichTextEditor from "react-rte";
+
 
 
 const ArticlesPage = () => {
@@ -15,8 +14,8 @@ const ArticlesPage = () => {
     const [showCreate, setShowCreate] = useState(false);
     const [newTitle, setNewTitle] = useState("");
     const [newAuthor, setNewAuthor] = useState("");
-    const [newBody, setNewBody] = useState("");
     const [newDate, setNewDate] = useState("");
+    const [editorState, setEditorState] = useState(RichTextEditor.createEmptyValue());
 
     useEffect(() => {
         async function fetchData() {
@@ -33,10 +32,10 @@ const ArticlesPage = () => {
         const url = process.env.REACT_APP_API_URL + "/articles";
         await Axios.post(url, {
             title: newTitle,
-            body: newBody,
+            body: editorState.toString('html'),
             date: newDate,
             author: newAuthor
-        }).then(res => console.log("article post: " + res));
+        });
         setShowCreate(false);
         history.replace('/dashboard');
         history.replace('/articles');
@@ -56,33 +55,56 @@ const ArticlesPage = () => {
                     {articles.map(article => <Articles article={article} />)}
                 </div>
             </Container>
-            <Modal show={showCreate} onHide={closeCreateModal}>
+            <Modal dialogClassName="write-article-modal" show={showCreate} onHide={closeCreateModal}>
                 <Modal.Header className="border-0">
                     <Modal.Title>Create new article</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form className="">
-                        <Form.Group size="lg" controlId="text">
-                            <Form.Label>Article Body</Form.Label>
+                    <div className="mx-5">
+                    <Form>
+                        <Form.Group size="lg" controlId="title">
+                            <Form.Label>Title</Form.Label>
                             <Form.Control
                                 autoFocus
-                                as="textarea"
-                                rows={3}
-                                placeholder="Excellent service. Will use again."
-                                value={newBody}
-                                onChange={(e) => setNewBody(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group size="lg" controlId="author">
-                            <Form.Label>Author</Form.Label>
-                            <Form.Control
                                 type="text"
-                                placeholder="John Doe"
-                                value={newAuthor}
-                                onChange={(e) => setNewAuthor(e.target.value)}
+                                placeholder="Lebron scores his 40,000th point"
+                                value={newTitle}
+                                onChange={(e) => setNewTitle(e.target.value)}
                             />
                         </Form.Group>
+                        <Form.Group size="lg" controlId="body">
+                            <Form.Label>Body</Form.Label>
+                            <RichTextEditor
+                                value={editorState}
+                                onChange={val => setEditorState(val)}
+                            />
+                        </Form.Group>
+                        <Form.Row>
+                            <Col>
+                                <Form.Group size="lg" controlId="author">
+                                    <Form.Label>Author</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Adrian Wojnarowski"
+                                        value={newAuthor}
+                                        onChange={(e) => setNewAuthor(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group size="lg" controlId="date">
+                                    <Form.Label>Date</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="November 24, 2024"
+                                        value={newDate}
+                                        onChange={(e) => setNewDate(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Form.Row>
                     </Form>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer className="border-0">
                     <Button variant="secondary" onClick={closeCreateModal}>

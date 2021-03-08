@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import './App.css';
 import { useHistory } from "react-router-dom";
 import UserContext from "./context/UserContext.js";
+import DbContext from "./context/DbContext.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Axios from 'axios';
 require('dotenv').config();
@@ -17,6 +18,9 @@ function App() {
     }
   });
   const history = useHistory();
+  const [dbInfo, setDbInfo] = useState({
+    "collections": []
+  });
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -40,8 +44,13 @@ function App() {
         }, (err) => {
           console.log(err);
         });
+        await Axios.get(process.env.REACT_APP_API_URL + "/info")
+          .then((res) => {
+            setDbInfo({
+              "collections": res.data[0].collections
+            })
+          });
         history.push('/projectselect');
-        console.log('already logged in');
       } else {
         history.push('/signin');
       }
@@ -49,10 +58,14 @@ function App() {
     checkLoggedIn();
   }, []);
 
+
+
   return (
     <UserContext.Provider value={{ userData, setUserData }} >
-      <NavbarContainer>
-      </NavbarContainer>
+      <DbContext.Provider value={{ dbInfo, setDbInfo }}>
+        <NavbarContainer>
+        </NavbarContainer>
+      </DbContext.Provider>
     </UserContext.Provider>
   );
 }

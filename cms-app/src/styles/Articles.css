@@ -1,4 +1,4 @@
-.edit-article-modal {
+.edit-article-modal, .delete-article-modal, .write-article-modal {
     min-width: 80%;
 }
 

@@ -27,7 +27,6 @@ const Articles = (props) => {
             image: ""
         })
         setShowEdit(false);
-        console.log(editorState.toString('html'));
         history.replace('/dashboard');
         history.replace('/articles');
     }
@@ -40,10 +39,6 @@ const Articles = (props) => {
         setShowDelete(false);
         history.replace('/dashboard');
         history.replace('/articles');
-    }
-
-    const handleEditorStateChange = (val) => {
-        setEditorState(val);
     }
 
     return (
@@ -62,7 +57,7 @@ const Articles = (props) => {
                             <span className="article-author-date">
                                 {props.article.date}
                             </span>
-                            <br/><br/>
+                            <br /><br />
                             <div dangerouslySetInnerHTML={{ __html: props.article.body }} />
                         </Card.Text>
                         <Container className="card-buttons">
@@ -77,6 +72,8 @@ const Articles = (props) => {
                     <Modal.Title>Edit article</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <div className="mx-5">
+
                     <Form className="">
                         <Form.Group size="lg" controlId="title">
                             <Form.Label>Title</Form.Label>
@@ -92,7 +89,7 @@ const Articles = (props) => {
                             <Form.Label>Body</Form.Label>
                             <RichTextEditor
                                 value={editorState}
-                                onChange={handleEditorStateChange}
+                                onChange={val => setEditorState(val)}
                             />
                         </Form.Group>
                         <Form.Row>
@@ -120,6 +117,7 @@ const Articles = (props) => {
                             </Col>
                         </Form.Row>
                     </Form>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer className="border-0">
                     <Button variant="secondary" onClick={handleCloseEdit}>
@@ -130,27 +128,28 @@ const Articles = (props) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Modal className="delete-testimonial-modal" show={showDelete} onHide={handleCloseDelete}>
+            <Modal dialogClassName="delete-article-modal" show={showDelete} onHide={handleCloseDelete}>
                 <Modal.Header className="border-0">
-                    <Modal.Title>Delete testimonial</Modal.Title>
+                    <Modal.Title>Delete article</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to delete this testimonial?
-                    <Card style={{ width: '40vw' }} border='secondary' className="mx-auto my-3">
+                    Are you sure you want to delete this article?
+                    <Card style={{ width: '50vw' }} border='secondary' className="mx-auto my-3">
                         <Card.Body>
                             <Card.Text>
                                 <span className="article-title">
                                     {props.article.title}
                                 </span>
-                                <span className="article-author">
-                                    {props.article.author}
+                                <br />
+                                <span className="article-author-date">
+                                    {props.article.author + " - "}
                                 </span>
-                                {props.article.date}
-                                <br></br>
-                                {props.article.body}
-                                <br></br>
+                                <span className="article-author-date">
+                                    {props.article.date}
+                                </span>
+                                <br /><br />
+                                <div dangerouslySetInnerHTML={{ __html: props.article.body }} />
                             </Card.Text>
-                            <Card.Subtitle className="mb-2 text-muted" style={{ fontWeight: 'normal' }}>{props.article.date}</Card.Subtitle>
                         </Card.Body>
                     </Card>
                     <strong>This action is irreversible.</strong>
