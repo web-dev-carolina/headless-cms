@@ -39,7 +39,7 @@ const TextContent = (props) => {
 
     return (
         <>
-            <div className="col-md-6 pt-3" key={props.text._id}>
+            <div className="col-md-6 pt-3" >
                 <Card style={{ width: '45vw' }} border='secondary'>
                     <Card.Body>
                         <Card.Text> {props.text.content} </Card.Text>
@@ -112,7 +112,7 @@ const TextContent = (props) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </>
+            </>
     )
 }
 

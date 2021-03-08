@@ -51,14 +51,15 @@ const TextContentPage = () => {
             <Container className="home pt-3">
                 <h3 className="text-center">Text content collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal} className="mb-3">Add new text block</Button>
-                {textAreas.map(area => <>
-                    <div className="row">
-                        <h4 className="m-0">{area}</h4>
-                    </div>
-                    <div className="row mb-3">
-                        {textContent.filter(t => t.section === area).map(t => <TextContent text={t} />)}
-                    </div>
-                </>)}
+                {textAreas.map(area =>
+                    <div key={area}>
+                        <div className="row" key={area + "-title"}>
+                            <h4 className="m-0">{area}</h4>
+                        </div>
+                        <div className="row mb-3" key={area + "-list"}>
+                            {textContent.filter(t => t.section === area).map(text => <TextContent text={text} key={text._id} />)}
+                        </div>
+                    </div>)}
             </Container>
             <Modal show={showCreate} onHide={closeCreateModal}>
                 <Modal.Header className="border-0">

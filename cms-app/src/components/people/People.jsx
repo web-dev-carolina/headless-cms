@@ -41,7 +41,7 @@ const People = (props) => {
 
     return (
         <>
-            <div className="col-md-4 pt-3" key={props.person._id}>
+            <div className="col-md-4 pt-3">
                 <Card style={{ width: '25vw' }} border='secondary'>
                     <Card.Body>
                         <Card.Title>{props.person.fname} {props.person.lname}</Card.Title>

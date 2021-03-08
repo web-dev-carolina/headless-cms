@@ -52,7 +52,7 @@ const ArticlesPage = () => {
                 <h3 className="text-center">Articles collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new article</Button>
                 <div className="row" key="articles">
-                    {articles.map(article => <Articles article={article} />)}
+                    {articles.map(article => <Articles article={article} key={article._id} />)}
                 </div>
             </Container>
             <Modal dialogClassName="write-article-modal" show={showCreate} onHide={closeCreateModal}>
@@ -61,49 +61,49 @@ const ArticlesPage = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="mx-5">
-                    <Form>
-                        <Form.Group size="lg" controlId="title">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control
-                                autoFocus
-                                type="text"
-                                placeholder="Lebron scores his 40,000th point"
-                                value={newTitle}
-                                onChange={(e) => setNewTitle(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group size="lg" controlId="body">
-                            <Form.Label>Body</Form.Label>
-                            <RichTextEditor
-                                value={editorState}
-                                onChange={val => setEditorState(val)}
-                            />
-                        </Form.Group>
-                        <Form.Row>
-                            <Col>
-                                <Form.Group size="lg" controlId="author">
-                                    <Form.Label>Author</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Adrian Wojnarowski"
-                                        value={newAuthor}
-                                        onChange={(e) => setNewAuthor(e.target.value)}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group size="lg" controlId="date">
-                                    <Form.Label>Date</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="November 24, 2024"
-                                        value={newDate}
-                                        onChange={(e) => setNewDate(e.target.value)}
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Form.Row>
-                    </Form>
+                        <Form>
+                            <Form.Group size="lg" controlId="title">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control
+                                    autoFocus
+                                    type="text"
+                                    placeholder="Lebron scores his 40,000th point"
+                                    value={newTitle}
+                                    onChange={(e) => setNewTitle(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group size="lg" controlId="body">
+                                <Form.Label>Body</Form.Label>
+                                <RichTextEditor
+                                    value={editorState}
+                                    onChange={val => setEditorState(val)}
+                                />
+                            </Form.Group>
+                            <Form.Row>
+                                <Col>
+                                    <Form.Group size="lg" controlId="author">
+                                        <Form.Label>Author</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Adrian Wojnarowski"
+                                            value={newAuthor}
+                                            onChange={(e) => setNewAuthor(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group size="lg" controlId="date">
+                                        <Form.Label>Date</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="November 24, 2024"
+                                            value={newDate}
+                                            onChange={(e) => setNewDate(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Form.Row>
+                        </Form>
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="border-0">

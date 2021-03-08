@@ -47,7 +47,7 @@ const PeoplePage = () => {
                 <h3 className="text-center">People collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new organization member</Button>
                 <div className="row" key="people">
-                    {people.map(person => <People person={person} />)}
+                    {people.map(person => <People person={person} key={person._id}/>)}
                 </div>
             </Container>
             <Modal show={showCreate} onHide={closeCreateModal}>

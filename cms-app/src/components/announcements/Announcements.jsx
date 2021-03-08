@@ -63,7 +63,7 @@ const Announcements = (props) => {
 
     return (
         <>
-            <div className="col-md-4 pt-3" key={props.announcement._id}>
+            <div className="col-md-4 pt-3">
                 <Card style={{ width: '25vw' }} border='secondary'>
                     <Card.Body>
                         <Card.Text>

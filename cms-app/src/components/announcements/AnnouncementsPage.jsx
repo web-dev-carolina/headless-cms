@@ -49,7 +49,7 @@ const AnnouncementsPage = () => {
                 <h3 className="text-center">Announcements collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new announcement</Button>
                 <div className="row" key="announcements">
-                    {announcements.map(announcement => <Announcements announcement={announcement} />)}
+                    {announcements.map(announcement => <Announcements announcement={announcement} key={announcement._id}/>)}
                 </div>
             </Container>
             <Modal show={showCreate} onHide={closeCreateModal}>

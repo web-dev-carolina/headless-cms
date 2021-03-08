@@ -44,8 +44,8 @@ const TestimonialsPage = () => {
             <Container className="home pt-3">
                 <h3 className="text-center">Testimonials collection:</h3>
                 <Button variant="secondary" onClick={showCreateModal}>Add new testimonial</Button>
-                <div className="row" key="testimonials">
-                    { testimonials.map(testimony => <Testimonials testimony={testimony} />) }
+                <div className="row">
+                    { testimonials.map(testimony => <Testimonials testimony={testimony} key={testimony._id}/>) }
                 </div>
             </Container>
             <Modal show={showCreate} onHide={closeCreateModal}>

@@ -42,12 +42,9 @@ export default function ProjectSelect() {
                 <div className="projects-list pt-3">
                     {projectsList.filter((p) => p !== "")
                         .map(p =>
-                            <>
-                                <Button id={p} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
-                                    {p}
-                                </Button>
-                                <br></br>
-                            </>
+                            <Button key={p} id={p} variant="secondary" size="lg" className="mb-3" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+                                {p}
+                            </Button>
                         )}
                 </div>
             </Container>

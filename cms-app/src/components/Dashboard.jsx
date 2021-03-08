@@ -25,12 +25,9 @@ const Dashboard = () => {
             <Container className="collections-list col-md-6 pt-3" id="collection-select">
                 {collectionsList.filter((c) => c !== "")
                     .map(c =>
-                        <>
-                            <Button key={c} id={c} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
-                                {c}
-                            </Button>
-                            <br></br>
-                        </>
+                        <Button className="mb-3" key={c} id={c} variant="secondary" size="lg" block onClick={(e) => clickHandler(e.target.firstChild.data)}>
+                            {c}
+                        </Button>
                     )}
             </Container>
         </>

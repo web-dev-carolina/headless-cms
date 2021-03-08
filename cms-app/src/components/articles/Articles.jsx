@@ -43,7 +43,7 @@ const Articles = (props) => {
 
     return (
         <>
-            <div className="mx-2 pt-3" key={props.article._id}>
+            <div className="mx-2 pt-3" >
                 <Card style={{ width: '40vw' }} border='secondary'>
                     <Card.Body>
                         <Card.Text>
@@ -72,51 +72,51 @@ const Articles = (props) => {
                     <Modal.Title>Edit article</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <div className="mx-5">
+                    <div className="mx-5">
 
-                    <Form className="">
-                        <Form.Group size="lg" controlId="title">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control
-                                autoFocus
-                                type="text"
-                                placeholder="Spring Commencement"
-                                value={editTitle}
-                                onChange={(e) => setEditTitle(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group size="lg" controlId="body">
-                            <Form.Label>Body</Form.Label>
-                            <RichTextEditor
-                                value={editorState}
-                                onChange={val => setEditorState(val)}
-                            />
-                        </Form.Group>
-                        <Form.Row>
-                            <Col>
-                                <Form.Group size="lg" controlId="author">
-                                    <Form.Label>Author</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Benjamin Franklin"
-                                        value={editAuthor}
-                                        onChange={(e) => setEditAuthor(e.target.value)}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group size="lg" controlId="date">
-                                    <Form.Label>Date</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="November 83, 1609"
-                                        value={editDate}
-                                        onChange={(e) => setEditDate(e.target.value)}
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Form.Row>
-                    </Form>
+                        <Form className="">
+                            <Form.Group size="lg" controlId="title">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control
+                                    autoFocus
+                                    type="text"
+                                    placeholder="Spring Commencement"
+                                    value={editTitle}
+                                    onChange={(e) => setEditTitle(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group size="lg" controlId="body">
+                                <Form.Label>Body</Form.Label>
+                                <RichTextEditor
+                                    value={editorState}
+                                    onChange={val => setEditorState(val)}
+                                />
+                            </Form.Group>
+                            <Form.Row>
+                                <Col>
+                                    <Form.Group size="lg" controlId="author">
+                                        <Form.Label>Author</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Benjamin Franklin"
+                                            value={editAuthor}
+                                            onChange={(e) => setEditAuthor(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group size="lg" controlId="date">
+                                        <Form.Label>Date</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="November 83, 1609"
+                                            value={editDate}
+                                            onChange={(e) => setEditDate(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Form.Row>
+                        </Form>
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="border-0">

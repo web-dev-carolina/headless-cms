@@ -37,7 +37,7 @@ const Testimonials = (props) => {
 
     return (
         <>
-            <div className="col-md-4 pt-3" key={props.testimony._id}>
+            <div className="col-md-4 pt-3" >
                 <Card style={{ width: '25vw' }} border='secondary'>
                     <Card.Body>
                         <Card.Text>
