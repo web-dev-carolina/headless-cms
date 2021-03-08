@@ -4,7 +4,6 @@ import { Container, Button, Form, Modal, Col } from "react-bootstrap";
 import '../../styles/Articles.css';
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
-import { Editor } from "react-draft-wysiwyg";
 import RichTextEditor from "react-rte";
 
 const Articles = (props) => {
