@@ -5,6 +5,8 @@ const testimonials = require("./testimonials.js");
 const text = require("./text.js");
 const announcements = require("./announcements.js");
 const articles = require("./articles.js");
+const images = require("./images.js");
+const { names } = require('debug');
 
 // routes from "/info"
 
@@ -20,7 +22,7 @@ app.post('/projectsConnect', async (req, res) => {
         const dbName = "test1";
 
         // connect to info collection
-        collectionName = "info";
+        var collectionName = "info";
         console.log("attempting connection to: " + collectionName);
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             infoCollection = dbCollection;
@@ -74,6 +76,17 @@ app.post('/projectsConnect', async (req, res) => {
         db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
             articles.init(dbCollection);
         }, function (err) { // failureCallback
+            throw (err);
+        });
+        
+
+        // connect to images collection
+        // defined above - const dbName = "test1";
+        collectionName = proj + "-images";
+        console.log("attempting connection to: " + collectionName);
+        db.initialize(dbName, collectionName, function (dbCollection) {
+            images.init(dbCollection);
+        }, function (err) {
             throw (err);
         });
         res.json(200);

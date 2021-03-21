@@ -11,7 +11,8 @@ const Dashboard = () => {
         history.push('/' + collection.toString().toLowerCase());
     }
     const collectionsList = db.dbInfo.collections;
-
+    console.log(collectionsList);
+    
     return (
         <>
             <Breadcrumb>

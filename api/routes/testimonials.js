@@ -8,7 +8,7 @@ const init = (collection) => {
     testimonialCollection = collection;
 }
 
-/* Testimonial CRUD routes */
+/* Testimonial CRUD routes */ 
 
 // CREATE new testimonial
 // ex. $ curl -X POST -H "Content-Type: application/json" -d '{"text":"testimonial body", "author":"testimonial author"}' http://localhost:9000/testimonials

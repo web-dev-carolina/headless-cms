@@ -10,6 +10,7 @@ import TestimonialsPage from './testimonials/TestimonialsPage.jsx';
 import TextContentPage from './text/TextContentPage.jsx';
 import AnnouncementsPage from './announcements/AnnouncementsPage.jsx';
 import ArticlesPage from './articles/ArticlesPage.jsx';
+import ImagesPage from './images/ImagesPage.jsx';
 import UserContext from "../context/UserContext.js";
 import "../styles/NavbarContainer.css";
 import { useHistory } from 'react-router-dom';
@@ -70,6 +71,7 @@ const NavbarContainer = () => {
                         <Route path='/text' component={TextContentPage} />
                         <Route path='/announcements' component={AnnouncementsPage} />
                         <Route path='/articles' component={ArticlesPage} />
+                        <Route path='/images' component={ImagesPage} />
                     </>
                 ) : (
                         <>
