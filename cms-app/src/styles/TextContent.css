@@ -1,3 +1,7 @@
 #subtitle {
     font-size: 120%;
 }
+
+.edit-text-modal, .delete-text-modal, .write-text-modal {
+    min-width: 80%;
+}

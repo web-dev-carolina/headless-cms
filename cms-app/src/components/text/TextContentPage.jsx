@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useHistory, Link } from "react-router-dom";
 import TextContent from './TextContent.jsx';
 import '../../styles/TextContent.css';
+import RichTextEditor from "react-rte";
 
 const TextContentPage = () => {
     const history = useHistory();
@@ -12,6 +13,7 @@ const TextContentPage = () => {
     const [showCreate, setShowCreate] = useState(false);
     const [newContent, setNewContent] = useState("");
     const [newSection, setNewSection] = useState("");
+    const [editorState, setEditorState] = useState(RichTextEditor.createValueFromString("", 'html'));
     const [newDescription, setNewDescription] = useState("");
 
 
@@ -61,7 +63,7 @@ const TextContentPage = () => {
                         </div>
                     </div>)}
             </Container>
-            <Modal show={showCreate} onHide={closeCreateModal}>
+            <Modal show={showCreate} onHide={closeCreateModal} dialogClassName="write-text-modal">
                 <Modal.Header className="border-0">
                     <Modal.Title>Create new text block</Modal.Title>
                 </Modal.Header>
@@ -69,6 +71,10 @@ const TextContentPage = () => {
                     <Form className="">
                         <Form.Group size="lg" controlId="content">
                             <Form.Label>Content</Form.Label>
+                            <RichTextEditor
+                                value={editorState}
+                                onChange={val => setEditorState(val)}
+                            />
                             <Form.Control
                                 autoFocus
                                 as="textarea"

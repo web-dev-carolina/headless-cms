@@ -4,12 +4,13 @@ import { Container, Button, Form, Modal } from "react-bootstrap";
 import '../../styles/TextContent.css';
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
+import RichTextEditor from "react-rte";
 
 const TextContent = (props) => {
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
-    const [editContent, setEditContent] = useState(props.text.content);
     const [editDescription, setEditDescription] = useState(props.text.desc);
+    const [editorState, setEditorState] = useState(RichTextEditor.createValueFromString(props.text.content, 'html'));
     const section = props.text.section;
     const history = useHistory();
 
@@ -18,7 +19,7 @@ const TextContent = (props) => {
     const handleSaveEdit = async () => {
         const url = process.env.REACT_APP_API_URL + '/textContent/' + props.text._id;
         await Axios.put(url, {
-            content: editContent,
+            content: editorState.toString('html'),
             desc: editDescription,
             section
         })
@@ -42,7 +43,8 @@ const TextContent = (props) => {
             <div className="col-md-6 pt-3" >
                 <Card style={{ width: '45vw' }} border='secondary'>
                     <Card.Body>
-                        <Card.Text> {props.text.content} </Card.Text>
+                        <Card.Text>  <div dangerouslySetInnerHTML={{ __html: props.text.content }} /> </Card.Text>
+                        
                         <Card.Subtitle className="mb-2 text-muted" style={{ fontWeight: 'normal' }}>{props.text.desc}</Card.Subtitle>
                         <Container className="card-buttons">
                             <Button onClick={handleShowEdit} variant="outline-primary" className="mr-2">Edit</Button>
@@ -51,7 +53,7 @@ const TextContent = (props) => {
                     </Card.Body>
                 </Card>
             </div>
-            <Modal className="edit-text-modal" show={showEdit} onHide={handleCloseEdit}>
+            <Modal dialogClassName="edit-text-modal" show={showEdit} onHide={handleCloseEdit}>
                 <Modal.Header className="border-0">
                     <Modal.Title>Edit text block</Modal.Title>
                 </Modal.Header>
@@ -59,13 +61,10 @@ const TextContent = (props) => {
                     <Form className="">
                         <Form.Group size="lg" controlId="content">
                             <Form.Label>Content</Form.Label>
-                            <Form.Control
-                                autoFocus
-                                as="textarea"
-                                rows={3}
-                                value={editContent}
-                                onChange={(e) => setEditContent(e.target.value)}
-                            />
+                            <RichTextEditor
+                                    value={editorState}
+                                    onChange={val => setEditorState(val)}
+                                />
                         </Form.Group>
                         <Form.Group size="lg" controlId="description">
                             <Form.Label>Description</Form.Label>
